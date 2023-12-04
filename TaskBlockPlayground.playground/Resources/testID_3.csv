@@ -1,0 +1,4 @@
+id,title,size,priority,difficulty,Category,notes
+1,Study for Final,Medium,High,Low,School,
+2,Read 20 pages in Pragmatic Programmer,Medium,Low,Low,School,
+3,Create a test issue using the Jira API,Medium,Medium,Medium,School,

@@ -1,0 +1,3 @@
+id,title,size,priority,difficulty,Category,notes
+1,Investigate CSV import with Playgrounds,Large,High,High,School,Sounds like we can use the Resources folder of the playground to hold local files
+2,Create a test issue using the Jira API,Medium,Low,Medium,Work,
