@@ -50,11 +50,11 @@ func buildDay() -> (TestData)  -> [Block] {
 let day = buildDay()
 
 // MARK: - Test 1
-let test1 = TestData(testId: 1, csv: "testID_1", preferredDifficulty: [1: .high], preferredCategory: [1: "Home"])
+let test1 = TestData(testId: 1, csv: "testID_1", preferredDifficulty: [1: .high], preferredCategory: [1: "School"])
 day(test1)
 
 // MARK: - Test 2
-let test2 = TestData(testId: 2, csv: "testID_2", preferredDifficulty: [1: .medium], preferredCategory: [1: "Work"])
+let test2 = TestData(testId: 2, csv: "testID_2", preferredDifficulty: [1: .high], preferredCategory: [1: "Work"])
 day(test2)
 
 // MARK: - Test 3
