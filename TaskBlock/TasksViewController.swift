@@ -18,6 +18,12 @@ class TasksViewController: UITableViewController {
     var todos = [ToDo]()
     var firstToDo = ToDo(id: 1, title: "New Task", due: .now, size: 1, priority: 1, difficulty: 1, notes: "Test notes")
     
+    @IBSegueAction func showDetailView(_ coder: NSCoder) -> NewEditTableViewController? {
+        guard let indexPath = tableView.indexPathForSelectedRow
+        else { fatalError("Nothing selected!") }
+        let todo = todos[indexPath.row]
+        return NewEditTableViewController(coder: coder, todo: todo)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate

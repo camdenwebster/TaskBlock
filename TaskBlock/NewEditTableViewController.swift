@@ -16,8 +16,8 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
     ["Category"]
     ]
     
-    var newToDo = ToDo(id: 1)
-    
+    //var todo = ToDo(id: 1)
+    let todo: ToDo
     let dateFormatter: DateFormatter = DateFormatter()
 
     @IBOutlet weak var titleTextField: UITextField!
@@ -41,19 +41,26 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
         // Set up text fields
         titleTextField.becomeFirstResponder()
-        titleTextField.text = newToDo.title
+        titleTextField.text = todo.title
         if titleTextField.text == nil {
             newTaskButton.isEnabled = false
         }
         titleTextField.delegate = self
-        notesTextView.text = newToDo.notes
+        notesTextView.text = todo.notes
         // Set up dates
-        startDatePicker.date = newToDo.start ?? .now
-        dueDatePicker.date = newToDo.due ?? .now
+        startDatePicker.date = todo.start ?? .now
+        dueDatePicker.date = todo.due ?? .now
         // Set up segmented controls
-        sizeControl.selectedSegmentIndex = newToDo.size
-        difficultyControl.selectedSegmentIndex = newToDo.difficulty
-        priorityControl.selectedSegmentIndex = newToDo.priority
+        sizeControl.selectedSegmentIndex = todo.size
+        difficultyControl.selectedSegmentIndex = todo.difficulty
+        priorityControl.selectedSegmentIndex = todo.priority
+    }
+    
+    required init?(coder: NSCoder) { fatalError("This should never be called!") }
+    
+    init?(coder: NSCoder, todo: ToDo) {
+      self.todo = todo
+      super.init(coder: coder)
     }
 
     // MARK: - Table view data source
@@ -98,54 +105,54 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func sizeControlTapped(_ sender: UISegmentedControl) {
         switch sizeControl.selectedSegmentIndex {
         case 0:
-            newToDo.size = 0
+            todo.size = 0
         case 1:
-            newToDo.size = 1
+            todo.size = 1
         case 2:
-            newToDo.size = 2
-        default: newToDo.size = 3
+            todo.size = 2
+        default: todo.size = 3
         }
-        print("Set task size to \(newToDo.size)")
+        print("Set task size to \(todo.size)")
     }
     
     @IBAction func startDatePicker(_ sender: UIDatePicker) {
-        newToDo.start = startDatePicker.date
+        todo.start = startDatePicker.date
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
-        print ("Setting start date to \(dateFormatter.string(from: newToDo.start ?? .now))")
+        print ("Setting start date to \(dateFormatter.string(from: todo.start ?? .now))")
     }
     
     @IBAction func dueDatePicker(_ sender: UIDatePicker) {
-        newToDo.due = dueDatePicker.date
+        todo.due = dueDatePicker.date
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
-        print ("Setting due date to \(dateFormatter.string(from: newToDo.due ?? .now))")
+        print ("Setting due date to \(dateFormatter.string(from: todo.due ?? .now))")
     }
     
     @IBAction func difficultyControlTapped(_ sender: UISegmentedControl) {
         switch difficultyControl.selectedSegmentIndex {
         case 0:
-            newToDo.difficulty = 0
+            todo.difficulty = 0
         case 1:
-            newToDo.difficulty = 1
+            todo.difficulty = 1
         case 2:
-            newToDo.difficulty = 2
-        default: newToDo.difficulty = 1
+            todo.difficulty = 2
+        default: todo.difficulty = 1
         }
-        print("Set task difficulty to \(newToDo.difficulty)")
+        print("Set task difficulty to \(todo.difficulty)")
     }
     
     @IBAction func priorityControlTapped(_ sender: UISegmentedControl) {
         switch priorityControl.selectedSegmentIndex {
         case 0:
-            newToDo.priority = 0
+            todo.priority = 0
         case 1:
-            newToDo.priority = 1
+            todo.priority = 1
         case 2:
-            newToDo.priority = 2
-        default: newToDo.priority = 1
+            todo.priority = 2
+        default: todo.priority = 1
         }
-        print("Set task priority to \(newToDo.priority)")
+        print("Set task priority to \(todo.priority)")
     }
     
     @IBAction func categoryMenuTapped(_ sender: UIButton) {
@@ -157,8 +164,8 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
             return
         }
         // If a value was entered we'll log it and close the sheet
-        newToDo.title = titleTextField.text
-        print("Setting title to \(newToDo.title ?? "New Task")")
+        todo.title = titleTextField.text
+        print("Setting title to \(todo.title ?? "New Task")")
         dismiss(animated: true, completion: nil)
     }
     

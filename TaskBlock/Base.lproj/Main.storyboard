@@ -25,6 +25,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="386" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="VBt-tN-PE0" kind="presentation" destinationCreationSelector="showDetailView:" id="YS1-YY-OPn"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -32,7 +35,13 @@
                             <outlet property="delegate" destination="d8q-oa-1mt" id="3h1-An-JYJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Tasks" id="yF1-ul-LTR"/>
+                    <navigationItem key="navigationItem" title="Tasks" id="yF1-ul-LTR">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="aDT-0d-ery">
+                            <connections>
+                                <action selector="addButtonTapped:" destination="d8q-oa-1mt" id="hHo-Fu-lqt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dn5-zU-wev" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -43,7 +52,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NewEditTableViewController" title="New/Edit" id="VBt-tN-PE0" customClass="NewEditTableViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="none" allowsSelection="NO" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="tOo-mr-tOy">
-                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="922"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="separatorColor" systemColor="systemBackgroundColor"/>
@@ -430,7 +439,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="GEQ-16-u6a" kind="relationship" relationship="viewControllers" id="CEe-Ue-asP"/>
-                        <segue destination="VBt-tN-PE0" kind="relationship" relationship="viewControllers" id="YCS-fq-kzx"/>
                         <segue destination="YTi-76-p2s" kind="relationship" relationship="viewControllers" id="0KG-NR-LoD"/>
                     </connections>
                 </tabBarController>
