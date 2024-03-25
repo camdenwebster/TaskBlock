@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 class TasksViewController: UITableViewController {
-    
+
     var dataManager: NSManagedObjectContext!
     var listArray = [NSManagedObject]()
-    
+        
     // Default task to be added at app launch
     var todos = [ToDo]()
     var firstToDo = ToDo(id: 1, title: "New Task", due: .now, size: 1, priority: 1, difficulty: 1, notes: "Test notes")
@@ -55,14 +55,16 @@ class TasksViewController: UITableViewController {
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        guard let id = todos.last?.id else {
+        guard let lastId = todos.last?.id else {
             return
         }
-        let newId = id + 1
-        let newToDo = ToDo(id: newId, title: "New Task \(newId)", start: nil, due: nil, size: 1, priority: 1, difficulty: 1)
+        let newId = lastId + 1
+        let newToDo = ToDo(id: newId)
         todos.append(newToDo)
         self.tableView.reloadData()
     }
+    
+    // MARK: - CoreData operations
     //    func fetchName(id: Int) -> ToDo {
 //        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Todo")
 //        do {

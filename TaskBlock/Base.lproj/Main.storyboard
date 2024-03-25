@@ -18,15 +18,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="todoCell" id="R17-Wo-P8u">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="todoCell" textLabel="jD5-zE-hxb" style="IBUITableViewCellStyleDefault" id="R17-Wo-P8u">
                                 <rect key="frame" x="0.0" y="50" width="430" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="R17-Wo-P8u" id="NSg-y7-bKc">
                                     <rect key="frame" x="0.0" y="0.0" width="386" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jD5-zE-hxb">
+                                            <rect key="frame" x="20" y="0.0" width="358" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="VBt-tN-PE0" kind="presentation" destinationCreationSelector="showDetailView:" id="YS1-YY-OPn"/>
+                                    <segue destination="VBt-tN-PE0" kind="presentation" identifier="showEditTaskView" destinationCreationSelector="showDetailView:" id="YS1-YY-OPn"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -42,6 +51,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="Z4G-G8-t8b" id="L4n-W1-Qlw"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dn5-zU-wev" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -398,10 +410,10 @@
             </objects>
             <point key="canvasLocation" x="1693" y="706"/>
         </scene>
-        <!--Settings View Controller-->
+        <!--Settings-->
         <scene sceneID="vWz-UW-ied">
             <objects>
-                <tableViewController id="ybs-sS-5xY" customClass="SettingsViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Settings" id="ybs-sS-5xY" customClass="SettingsViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="pg4-65-jOj">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -421,7 +433,7 @@
                             <outlet property="delegate" destination="ybs-sS-5xY" id="Npp-tJ-u2p"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="bIg-PH-ZL8"/>
+                    <navigationItem key="navigationItem" title="Settings" id="bIg-PH-ZL8"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oj2-kS-b77" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -493,7 +505,7 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

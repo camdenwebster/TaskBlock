@@ -173,7 +173,7 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
         // Set up alert to be thrown if cancel is tapped
         let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "Delete Task", style: .destructive, handler: { action -> Void in
+        let okAction = UIAlertAction(title: "Discard Changes", style: .destructive, handler: { action -> Void in
             self.dismiss(animated: true, completion: nil)        })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
             //Just dismiss the action sheet
