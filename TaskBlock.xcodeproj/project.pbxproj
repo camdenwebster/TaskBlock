@@ -14,7 +14,7 @@
 		192C7D2D2B85A30000DBA8FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 192C7D2B2B85A30000DBA8FB /* LaunchScreen.storyboard */; };
 		199782232B85B5BC00BCA16F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199782222B85B5BC00BCA16F /* SettingsViewController.swift */; };
 		199782252B85B5CC00BCA16F /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199782242B85B5CC00BCA16F /* TasksViewController.swift */; };
-		19DA03162B8EE1E900303FE2 /* NewEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DA03152B8EE1E900303FE2 /* NewEditTableViewController.swift */; };
+		19DA03162B8EE1E900303FE2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DA03152B8EE1E900303FE2 /* DetailViewController.swift */; };
 		19DD8C232B8621D700239601 /* ToDoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DD8C222B8621D700239601 /* ToDoModel.swift */; };
 		19DD8C252B86D1F800239601 /* EventProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DD8C242B86D1F800239601 /* EventProtocol.swift */; };
 		19ED78572B9AC32700BDA1A7 /* ToDoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19ED78552B9AC32700BDA1A7 /* ToDoModel.xcdatamodeld */; };
@@ -30,7 +30,7 @@
 		192C7D2E2B85A30000DBA8FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		199782222B85B5BC00BCA16F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		199782242B85B5CC00BCA16F /* TasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
-		19DA03152B8EE1E900303FE2 /* NewEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEditTableViewController.swift; sourceTree = "<group>"; };
+		19DA03152B8EE1E900303FE2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		19DD8C222B8621D700239601 /* ToDoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoModel.swift; sourceTree = "<group>"; };
 		19DD8C242B86D1F800239601 /* EventProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProtocol.swift; sourceTree = "<group>"; };
 		19ED78562B9AC32700BDA1A7 /* ToDoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDoModel.xcdatamodel; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 				199782242B85B5CC00BCA16F /* TasksViewController.swift */,
 				19DD8C222B8621D700239601 /* ToDoModel.swift */,
 				192C7D262B85A2FB00DBA8FB /* Main.storyboard */,
-				19DA03152B8EE1E900303FE2 /* NewEditTableViewController.swift */,
+				19DA03152B8EE1E900303FE2 /* DetailViewController.swift */,
 				192C7D292B85A30000DBA8FB /* Assets.xcassets */,
 				192C7D2B2B85A30000DBA8FB /* LaunchScreen.storyboard */,
 				192C7D2E2B85A30000DBA8FB /* Info.plist */,
@@ -156,7 +156,7 @@
 				19DD8C252B86D1F800239601 /* EventProtocol.swift in Sources */,
 				192C7D212B85A2FB00DBA8FB /* AppDelegate.swift in Sources */,
 				199782232B85B5BC00BCA16F /* SettingsViewController.swift in Sources */,
-				19DA03162B8EE1E900303FE2 /* NewEditTableViewController.swift in Sources */,
+				19DA03162B8EE1E900303FE2 /* DetailViewController.swift in Sources */,
 				192C7D232B85A2FB00DBA8FB /* SceneDelegate.swift in Sources */,
 				19ED78572B9AC32700BDA1A7 /* ToDoModel.xcdatamodeld in Sources */,
 				199782252B85B5CC00BCA16F /* TasksViewController.swift in Sources */,

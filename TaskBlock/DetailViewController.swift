@@ -1,5 +1,5 @@
 //
-//  NewEditTableViewController.swift
+//  DetailViewController.swift
 //  TableViewDemoCamdenW
 //
 //  Created by Camden Webster on 2/27/24.
@@ -7,19 +7,20 @@
 
 import UIKit
 
-class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
-    
+class DetailViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate {
+    // MARK: - Initialize constants
     let viewElements = [
     ["Title", "Notes"],
     ["Start date", "Due Date"],
     ["Size", "Difficulty", "Priority"],
     ["Category"]
     ]
-    
-    //var todo = ToDo(id: 1)
     let todo: ToDo
     let dateFormatter: DateFormatter = DateFormatter()
-
+    let placeholderLabel = UILabel()
+    
+    
+    // MARK: - Outlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var sizeControl: UISegmentedControl!
     @IBOutlet weak var startLabel: UILabel!
@@ -33,20 +34,26 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var categoryButtonMenu: UIButton!
     @IBOutlet weak var notesTextView: UITextView!
-    @IBOutlet weak var newTaskButton: UIBarButtonItem!
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
+    
+    // MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
         // Set up text fields
         titleTextField.becomeFirstResponder()
         titleTextField.text = todo.title
-        if titleTextField.text == nil {
-            newTaskButton.isEnabled = false
-        }
         titleTextField.delegate = self
+        // Set placeholder for notes view
         notesTextView.text = todo.notes
+        placeholderLabel.text = "Notes"
+        placeholderLabel.font = UIFont.systemFont(ofSize: (notesTextView.font?.pointSize)!, weight: .regular)
+        placeholderLabel.sizeToFit()
+        notesTextView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (notesTextView.font?.pointSize)! / 2)
+        placeholderLabel.textColor = UIColor.placeholderText
+        placeholderLabel.isHidden = !notesTextView.text.isEmpty
+        notesTextView.delegate = self
         // Set up dates
         startDatePicker.date = todo.start ?? .now
         dueDatePicker.date = todo.due ?? .now
@@ -56,6 +63,45 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
         priorityControl.selectedSegmentIndex = todo.priority
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // TODO: pop alert when back/cancel button is pressed, allowing user to discard changes
+//        if isMovingFromParent {
+//            let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
+//            
+//            let okAction = UIAlertAction(title: "Discard Changes", style: .destructive) { [ weak self ] _ in
+//                // Dismiss the current view controller after the user clears the alert
+//                self?.navigationController?.popViewController(animated: true)
+//            }
+//            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
+//                //Just dismiss the action sheet
+//            })
+//            alert.addAction(okAction)
+//            alert.addAction(cancelAction)
+//            present(alert, animated: true, completion: nil)
+//            // Prevent the parent view controller from being displayed until the user clears the alert
+//            navigationController?.topViewController?.navigationItem.backBarButtonItem?.isEnabled = false
+//        }
+
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //let destVC = segue.destination as! TasksViewController
+        guard let titleText = titleTextField.text, !titleText.isEmpty else {
+            print("No title set, returning")
+            return
+        }
+        // If a value was entered we'll log it and close the sheet
+        todo.title = titleText
+        print("Setting task id \(todo.id) title to '\(todo.title ?? "")'")
+        guard let notesText = notesTextView.text, !notesText.isEmpty else {
+            print("No notes set, returning")
+            return
+        }
+        todo.notes = notesText
+        print("Setting task id \(todo.id) notes to '\(todo.notes ?? "")'")
+    }
+
     required init?(coder: NSCoder) { fatalError("This should never be called!") }
     
     init?(coder: NSCoder, todo: ToDo) {
@@ -63,6 +109,7 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
       super.init(coder: coder)
     }
 
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -70,16 +117,23 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return viewElements[section].count
     }
-
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    
+    // MARK: - Delegate methods
+    // UITextViewDelegate method to handle text changes for Notes text view
+    // Source: https://stackoverflow.com/a/28271069
+    func textViewDidChange(_ textView: UITextView) {
+        placeholderLabel.isHidden = !textView.text.isEmpty
+        }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        placeholderLabel.isHidden = !textView.text.isEmpty
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        placeholderLabel.isHidden = true
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -89,19 +143,9 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
+
     
-    // UITextFieldDelegate method
-    func textField(_ titleTextField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // Determine the new text length
-        let currentText = titleTextField.text ?? ""
-        let newLength = currentText.count + string.count - range.length
-
-        // Enable the button if the new text length is greater than 0, otherwise disable it
-        newTaskButton.isEnabled = newLength > 0
-
-        return true // Return true to allow the text change to happen
-    }
-
+    // MARK: - Actions
     @IBAction func sizeControlTapped(_ sender: UISegmentedControl) {
         switch sizeControl.selectedSegmentIndex {
         case 0:
@@ -158,29 +202,9 @@ class NewEditTableViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func categoryMenuTapped(_ sender: UIButton) {
         // TODO:
     }
-    
-    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        guard let text = titleTextField.text, !text.isEmpty else {
-            return
-        }
-        // If a value was entered we'll log it and close the sheet
-        todo.title = titleTextField.text
-        print("Setting title to \(todo.title ?? "New Task")")
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        // Set up alert to be thrown if cancel is tapped
-        let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "Discard Changes", style: .destructive, handler: { action -> Void in
-            self.dismiss(animated: true, completion: nil)        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
-            //Just dismiss the action sheet
-        })
-        alert.addAction(okAction)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
-    }
+    func deleteTodo() {
+        // Set up alert to be thrown if back button is tapped
 
+    }
 }

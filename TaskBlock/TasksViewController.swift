@@ -16,19 +16,18 @@ class TasksViewController: UITableViewController {
         
     // Default task to be added at app launch
     var todos = [ToDo]()
-    var firstToDo = ToDo(id: 1, title: "New Task", due: .now, size: 1, priority: 1, difficulty: 1, notes: "Test notes")
     
-    @IBSegueAction func showDetailView(_ coder: NSCoder) -> NewEditTableViewController? {
+    @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
         guard let indexPath = tableView.indexPathForSelectedRow
         else { fatalError("Nothing selected!") }
         let todo = todos[indexPath.row]
-        return NewEditTableViewController(coder: coder, todo: todo)
-    }
+        return DetailViewController(coder: coder, todo: todo)    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
         // Do any additional setup after loading the view.
-        todos.append(firstToDo)
         for todo in todos {
             guard todo.title != nil else {
                 return
@@ -36,6 +35,11 @@ class TasksViewController: UITableViewController {
         }
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         dataManager = appDelegate.persistentContainer.viewContext
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -55,15 +59,21 @@ class TasksViewController: UITableViewController {
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        guard let lastId = todos.last?.id else {
-            return
+        var newId: Int
+        if let lastId = todos.last?.id {
+            newId = lastId + 1
+        } else {
+            newId = 0
+            print("First task - setting it as ID: \(newId)")
         }
-        let newId = lastId + 1
         let newToDo = ToDo(id: newId)
+        print("Adding task with ID: \(newToDo.id) to todos array")
         todos.append(newToDo)
         self.tableView.reloadData()
     }
     
+    @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
+
     // MARK: - CoreData operations
     //    func fetchName(id: Int) -> ToDo {
 //        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Todo")
