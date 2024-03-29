@@ -58,7 +58,16 @@ class TasksViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            todos.remove(at: indexPath.row)
+            print("Removed task id at \(indexPath.row). todos array count: \(todos.count)")
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
+        let indexPath = IndexPath(row: todos.count, section: 0)
         var newId: Int
         if let lastId = todos.last?.id {
             newId = lastId + 1
@@ -69,7 +78,8 @@ class TasksViewController: UITableViewController {
         let newToDo = ToDo(id: newId)
         print("Adding task with ID: \(newToDo.id) to todos array")
         todos.append(newToDo)
-        self.tableView.reloadData()
+        print("todos count: \(todos.count)")
+        tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
