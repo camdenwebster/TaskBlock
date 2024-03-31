@@ -10,19 +10,24 @@ import Foundation
 import CoreData
 
 class TasksViewController: UITableViewController {
-    
+
     var dataManager: NSManagedObjectContext!
     var listArray = [NSManagedObject]()
-    
+        
     // Default task to be added at app launch
     var todos = [ToDo]()
-    var firstToDo = ToDo(id: 1, title: "New Task", due: .now, size: 1, priority: 1, difficulty: 1, notes: "Test notes")
     
+    @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
+        guard let indexPath = tableView.indexPathForSelectedRow
+        else { fatalError("Nothing selected!") }
+        let todo = todos[indexPath.row]
+        return DetailViewController(coder: coder, todo: todo)    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
         // Do any additional setup after loading the view.
-        todos.append(firstToDo)
         for todo in todos {
             guard todo.title != nil else {
                 return
@@ -30,6 +35,11 @@ class TasksViewController: UITableViewController {
         }
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         dataManager = appDelegate.persistentContainer.viewContext
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -48,15 +58,33 @@ class TasksViewController: UITableViewController {
         return cell
     }
     
-    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        guard let id = todos.last?.id else {
-            return
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            todos.remove(at: indexPath.row)
+            print("Removed task id at \(indexPath.row). todos array count: \(todos.count)")
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
-        let newId = id + 1
-        let newToDo = ToDo(id: newId, title: "New Task \(newId)", start: nil, due: nil, size: 1, priority: 1, difficulty: 1)
-        todos.append(newToDo)
-        self.tableView.reloadData()
     }
+    
+    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
+        let indexPath = IndexPath(row: todos.count, section: 0)
+        var newId: Int
+        if let lastId = todos.last?.id {
+            newId = lastId + 1
+        } else {
+            newId = 0
+            print("First task - setting it as ID: \(newId)")
+        }
+        let newToDo = ToDo(id: newId)
+        print("Adding task with ID: \(newToDo.id) to todos array")
+        todos.append(newToDo)
+        print("todos count: \(todos.count)")
+        tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
+
+    // MARK: - CoreData operations
     //    func fetchName(id: Int) -> ToDo {
 //        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Todo")
 //        do {
