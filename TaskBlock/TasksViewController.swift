@@ -54,7 +54,7 @@ class TasksViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         tableView.reloadRows(at: [indexPath], with: .automatic)
-        cell.textLabel?.text = "\(todos[indexPath.row].title ?? "New Task")"
+//        cell.textLabel?.text = "\(todos[indexPath.row].title ?? "New Task")"
         return cell
     }
     

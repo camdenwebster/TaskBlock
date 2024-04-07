@@ -26,7 +26,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var startDatePicker: UIDatePicker!
     @IBOutlet weak var dueLabel: UILabel!
-    @IBOutlet weak var dueDatePicker: UIDatePicker!
+    @IBOutlet weak var endDatePicker: UIDatePicker!
     @IBOutlet weak var difficultyLabel: UILabel!
     @IBOutlet weak var difficultyControl: UISegmentedControl!
     @IBOutlet weak var priorityLabel: UILabel!
@@ -56,7 +56,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         notesTextView.delegate = self
         // Set up dates
         startDatePicker.date = todo.start ?? .now
-        dueDatePicker.date = todo.due ?? .now
+        endDatePicker.date = todo.end ?? .now
         // Set up segmented controls
         sizeControl.selectedSegmentIndex = todo.size
         difficultyControl.selectedSegmentIndex = todo.difficulty
@@ -146,6 +146,23 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
 
     
     // MARK: - Actions
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: "Discard Changes", style: .destructive) { [ weak self ] _ in
+            // Dismiss the current view controller after the user clears the alert
+            self?.navigationController?.popViewController(animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
+            //Just dismiss the action sheet
+        })
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+        // Prevent the parent view controller from being displayed until the user clears the alert
+//        navigationController?.topViewController?.navigationItem.backBarButtonItem?.isEnabled = false
+    }
+    
     @IBAction func sizeControlTapped(_ sender: UISegmentedControl) {
         switch sizeControl.selectedSegmentIndex {
         case 0:
@@ -166,11 +183,11 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         print ("Setting start date to \(dateFormatter.string(from: todo.start ?? .now))")
     }
     
-    @IBAction func dueDatePicker(_ sender: UIDatePicker) {
-        todo.due = dueDatePicker.date
+    @IBAction func endDatePicker(_ sender: UIDatePicker) {
+        todo.end = endDatePicker.date
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
-        print ("Setting due date to \(dateFormatter.string(from: todo.due ?? .now))")
+        print ("Setting end date to \(dateFormatter.string(from: todo.end ?? .now))")
     }
     
     @IBAction func difficultyControlTapped(_ sender: UISegmentedControl) {
