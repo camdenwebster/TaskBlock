@@ -13,6 +13,7 @@ class TasksViewController: UITableViewController {
 
     var dataManager: NSManagedObjectContext!
     var listArray = [NSManagedObject]()
+    let dateFormatter: DateFormatter = DateFormatter()
         
     // Default task to be added at app launch
     var todos = [ToDo]()
@@ -52,9 +53,45 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
+        // Set up cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ToDoCell.self)", for: indexPath) as? ToDoCell
+        else { fatalError("Could not create ToDo cell") }
+        // Display notes in cell if a value is found
+        if let notes = todos[indexPath.row].notes {
+            // Un-hide the label
+            cell.notes.isHidden = false
+            // Set the text value
+            cell.notes.text = notes
+        } else {
+            // If the string property is nil, hide the label
+            cell.notes.isHidden = true
+        }
+        // Display start date in cell if value is found
+        if let startDate = todos[indexPath.row].start {
+            // Un-hide the label
+            cell.startDate.isHidden = false
+            // Set the text value
+            dateFormatter.timeStyle = .short
+            let startDateText = "Start: \(dateFormatter.string(from: startDate))"
+            cell.startDate.text = startDateText
+        } else {
+            // If the string property is nil, hide the label
+            cell.notes.isHidden = true
+        }
+        // Display end date in cell if a value is found
+        if let endDate = todos[indexPath.row].end {
+            // Un-hide the label
+            cell.endDate.isHidden = false
+            // Set the text value
+            dateFormatter.timeStyle = .short
+            let endDateText = "End: \(dateFormatter.string(from: endDate))"
+            cell.endDate.text = endDateText
+        } else {
+            // If the string property is nil, hide the label
+            cell.notes.isHidden = true
+        }
         tableView.reloadRows(at: [indexPath], with: .automatic)
-//        cell.textLabel?.text = "\(todos[indexPath.row].title ?? "New Task")"
+        cell.titleField.text = "\(todos[indexPath.row].title ?? "New Task")"
         return cell
     }
     

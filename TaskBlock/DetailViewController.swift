@@ -25,7 +25,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     @IBOutlet weak var sizeControl: UISegmentedControl!
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var startDatePicker: UIDatePicker!
-    @IBOutlet weak var dueLabel: UILabel!
+    @IBOutlet weak var endLabel: UILabel!
     @IBOutlet weak var endDatePicker: UIDatePicker!
     @IBOutlet weak var difficultyLabel: UILabel!
     @IBOutlet weak var difficultyControl: UISegmentedControl!
@@ -159,8 +159,6 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
-        // Prevent the parent view controller from being displayed until the user clears the alert
-//        navigationController?.topViewController?.navigationItem.backBarButtonItem?.isEnabled = false
     }
     
     @IBAction func sizeControlTapped(_ sender: UISegmentedControl) {
