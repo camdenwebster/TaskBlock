@@ -15,7 +15,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     ["Size", "Difficulty", "Priority"],
     ["Category"]
     ]
-    let todo: ToDo
+    let todo: ToDoItem
     let dateFormatter: DateFormatter = DateFormatter()
     let placeholderLabel = UILabel()
     
@@ -58,9 +58,9 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         startDatePicker.date = todo.start ?? .now
         endDatePicker.date = todo.end ?? .now
         // Set up segmented controls
-        sizeControl.selectedSegmentIndex = todo.size
-        difficultyControl.selectedSegmentIndex = todo.difficulty
-        priorityControl.selectedSegmentIndex = todo.priority
+        sizeControl.selectedSegmentIndex = Int(todo.size)
+        difficultyControl.selectedSegmentIndex = Int(todo.difficulty)
+        priorityControl.selectedSegmentIndex = Int(todo.priority)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -93,6 +93,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         }
         // If a value was entered we'll log it and close the sheet
         todo.title = titleText
+        
         print("Setting task id \(todo.id) title to '\(todo.title ?? "")'")
         guard let notesText = notesTextView.text, !notesText.isEmpty else {
             print("No notes set, returning")
@@ -104,7 +105,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
 
     required init?(coder: NSCoder) { fatalError("This should never be called!") }
     
-    init?(coder: NSCoder, todo: ToDo) {
+    init?(coder: NSCoder, todo: ToDoItem) {
       self.todo = todo
       super.init(coder: coder)
     }

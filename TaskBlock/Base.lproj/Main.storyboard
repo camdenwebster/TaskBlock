@@ -18,15 +18,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="ToDoCell" id="R17-Wo-P8u" customClass="ToDoCell" customModule="TaskBlock" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ToDoCell" id="R17-Wo-P8u" customClass="ToDoCell" customModule="TaskBlock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="430" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="R17-Wo-P8u" id="NSg-y7-bKc">
-                                    <rect key="frame" x="0.0" y="0.0" width="386" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="430" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Mr-rR-JfR" userLabel="Cell Stack View">
-                                            <rect key="frame" x="20" y="0.0" width="346" height="60"/>
+                                            <rect key="frame" x="20" y="0.0" width="390" height="60"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tRH-Ip-DVQ">
                                                     <rect key="frame" x="0.0" y="15.999999999999998" width="30" height="28.666666666666664"/>
@@ -58,7 +58,7 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="right" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" axis="vertical" alignment="bottom" spacingType="standard" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Dc-Da-D62" userLabel="Start/End Stack View">
-                                                    <rect key="frame" x="98" y="30" width="248" height="0.0"/>
+                                                    <rect key="frame" x="98" y="30" width="292" height="0.0"/>
                                                     <subviews>
                                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Start" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tyu-cf-uhr">
                                                             <rect key="frame" x="-6.3333333333333286" y="0.0" width="28" height="0.0"/>

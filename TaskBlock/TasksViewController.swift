@@ -10,36 +10,35 @@ import Foundation
 import CoreData
 
 class TasksViewController: UITableViewController {
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    private var models = [ToDoItem]()
 
-    var dataManager: NSManagedObjectContext!
-    var listArray = [NSManagedObject]()
+//    var listArray = [NSManagedObject]()
     let dateFormatter: DateFormatter = DateFormatter()
-        
-    // Default task to be added at app launch
-    var todos = [ToDo]()
     
     @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
         guard let indexPath = tableView.indexPathForSelectedRow
         else { fatalError("Nothing selected!") }
-        let todo = todos[indexPath.row]
+        let todo = models[indexPath.row]
         return DetailViewController(coder: coder, todo: todo)    }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.getAllItems()
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
         // Do any additional setup after loading the view.
-        for todo in todos {
+        for todo in models {
             guard todo.title != nil else {
                 return
             }
         }
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        dataManager = appDelegate.persistentContainer.viewContext
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.updateItems()
         tableView.reloadData()
     }
     
@@ -47,17 +46,19 @@ class TasksViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todos.count
+        return models.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Set up cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ToDoCell.self)", for: indexPath) as? ToDoCell
         else { fatalError("Could not create ToDo cell") }
+        let toDo = models[indexPath.row]
+        
         // Display notes in cell if a value is found
-        if let notes = todos[indexPath.row].notes {
+        if let notes = toDo.notes {
             // Un-hide the label
             cell.notes.isHidden = false
             // Set the text value
@@ -66,8 +67,9 @@ class TasksViewController: UITableViewController {
             // If the string property is nil, hide the label
             cell.notes.isHidden = true
         }
+        
         // Display start date in cell if value is found
-        if let startDate = todos[indexPath.row].start {
+        if let startDate = toDo.start {
             // Un-hide the label
             cell.startDate.isHidden = false
             // Set the text value
@@ -78,8 +80,9 @@ class TasksViewController: UITableViewController {
             // If the string property is nil, hide the label
             cell.notes.isHidden = true
         }
+        
         // Display end date in cell if a value is found
-        if let endDate = todos[indexPath.row].end {
+        if let endDate = toDo.end {
             // Un-hide the label
             cell.endDate.isHidden = false
             // Set the text value
@@ -90,78 +93,85 @@ class TasksViewController: UITableViewController {
             // If the string property is nil, hide the label
             cell.notes.isHidden = true
         }
+        
         tableView.reloadRows(at: [indexPath], with: .automatic)
-        cell.titleField.text = "\(todos[indexPath.row].title ?? "New Task")"
+        cell.titleField.text = "\(toDo.title ?? "New Task")"
         return cell
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let todo = models[indexPath.row]
         if editingStyle == .delete {
-            todos.remove(at: indexPath.row)
-            print("Removed task id at \(indexPath.row). todos array count: \(todos.count)")
+            models.remove(at: indexPath.row)
+            print("Removed task id: \(todo.id), title: \(todo.title ?? "") todos array count: \(models.count)")
+            self.deleteItem(item: todo)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        let indexPath = IndexPath(row: todos.count, section: 0)
-        var newId: Int
-        if let lastId = todos.last?.id {
-            newId = lastId + 1
-        } else {
-            newId = 0
-            print("First task - setting it as ID: \(newId)")
-        }
-        let newToDo = ToDo(id: newId)
-        print("Adding task with ID: \(newToDo.id) to todos array")
-        todos.append(newToDo)
-        print("todos count: \(todos.count)")
+        let indexPath = IndexPath(row: models.count, section: 0)
+        let newItem = self.createItem()
+        self.getAllItems()
+        print("New task - setting it as ID: \(newItem.id)")
+        print("todos count: \(models.count)")
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
-
-    // MARK: - CoreData operations
-    //    func fetchName(id: Int) -> ToDo {
-//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Todo")
-//        do {
-//            let result = try dataManager.fetch(fetchRequest)
-//            listArray = result as! [NSManagedObject]
-//            for item in listArray {
-//                let product = item.value(forKey: "id") as! Int
-//                    toDoName.text! += product
-//            }
-//            return result
-//        } catch {
-//            print("Error retrieving data")
-//        }
-//    }
-//    
-//    func save(name: String) {
-//      
-//      guard let appDelegate =
-//        UIApplication.shared.delegate as? AppDelegate else {
-//        return
-//      }
-//      
-//      // 1
-//      let managedContext = appDelegate.persistentContainer.viewContext
-//      
-//      // 2
-//      let entity =  NSEntityDescription.entity(forEntityName: "ToDo", in: managedContext)!
-//      
-//      let person = NSManagedObject(entity: entity, insertInto: managedContext)
-//      
-//      // 3
-//      person.setValue(name, forKeyPath: "title")
-//      
-//      // 4
-//      do {
-//        try managedContext.save()
-//        people.append(person)
-//      } catch let error as NSError {
-//        print("Could not save. \(error), \(error.userInfo)")
-//      }
-//    }
+    
+    func getAllItems() {
+        do {
+            models = try context.fetch(ToDoItem.fetchRequest())
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        catch {
+            fatalError("Failed to get items")
+        }
+    }
+    
+    func createItem() -> ToDoItem {
+        let newItem = ToDoItem(context: context)
+        newItem.title = "New Task"
+        newItem.id = UUID().uuidString
+        newItem.priority = 1
+        newItem.difficulty = 1
+        newItem.size = 1
+        newItem.completed = false
+        
+        do {
+            try context.save()
+        }
+        catch {
+            fatalError("Failed to save item id: \(newItem.id), title: \(newItem.title ?? "")")
+        }
+        return newItem
+    }
+    
+    func deleteItem(item: ToDoItem) {
+        context.delete(item)
+        
+        do {
+            try context.save()
+        }
+        catch {
+            fatalError("Failed to delete item id: \(item.id), title: \(item.title ?? "")")
+        }
+    }
+    
+    func updateItems() {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
     
 }
