@@ -9,15 +9,18 @@ import UIKit
 
 class ToDoCell: UITableViewCell {
     
-    @IBOutlet var completionToggle: UIImageView!
+    @IBOutlet var completionToggle: UIButton!
     @IBOutlet var titleField: UILabel!
     @IBOutlet var notes: UILabel!
     @IBOutlet var startDate: UILabel!
     @IBOutlet var endDate: UILabel!
+        
+    var toggleFilled: Bool = false
     
-//    @IBAction func didTapCirlce() {
-//        print("Circle was tapped!")
-//    }
+    @IBAction func didTapCircle(_ sender: UIButton) {
+        sender.isSelected.toggle()
+    }
+
 //    @IBOutlet var priority: UIImageView!
 //    @IBOutlet var difficulty: UIImageView!
 }

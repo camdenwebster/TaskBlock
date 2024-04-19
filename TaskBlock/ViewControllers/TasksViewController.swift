@@ -57,6 +57,18 @@ class TasksViewController: UITableViewController {
         else { fatalError("Could not create ToDo cell") }
         let toDo = models[indexPath.row]
         
+        // Set up completion toggle
+        if toDo.completed {            
+            cell.completionToggle.isSelected = true
+        } else {
+            cell.completionToggle.isSelected = false
+        }
+        
+        cell.completionToggle.setTitle("", for: .normal)
+        cell.completionToggle.tag = indexPath.row
+        cell.completionToggle.addTarget(self, action: #selector(toggleWasSelected(sender:)), for: .touchUpInside)
+
+                
         // Display notes in cell if a value is found
         if let notes = toDo.notes {
             // Un-hide the label
@@ -96,6 +108,9 @@ class TasksViewController: UITableViewController {
         
         tableView.reloadRows(at: [indexPath], with: .automatic)
         cell.titleField.text = "\(toDo.title ?? "New Task")"
+        
+        
+        
         return cell
     }
     
@@ -120,6 +135,17 @@ class TasksViewController: UITableViewController {
     
     @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
     
+    @objc
+    func toggleWasSelected(sender: UIButton) {
+        let rowIndex: Int = sender.tag
+        let toDo = models[rowIndex]
+        toDo.completed.toggle()
+        print("Set task id: \(toDo.id) to completed: \(toDo.completed)")
+        self.updateItems()
+        tableView.reloadData()
+    }
+    
+    // MARK: CoreData CRUD Actions
     func getAllItems() {
         do {
             models = try context.fetch(ToDoItem.fetchRequest())

@@ -63,28 +63,6 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         priorityControl.selectedSegmentIndex = Int(todo.priority)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        // TODO: pop alert when back/cancel button is pressed, allowing user to discard changes
-//        if isMovingFromParent {
-//            let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
-//            
-//            let okAction = UIAlertAction(title: "Discard Changes", style: .destructive) { [ weak self ] _ in
-//                // Dismiss the current view controller after the user clears the alert
-//                self?.navigationController?.popViewController(animated: true)
-//            }
-//            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
-//                //Just dismiss the action sheet
-//            })
-//            alert.addAction(okAction)
-//            alert.addAction(cancelAction)
-//            present(alert, animated: true, completion: nil)
-//            // Prevent the parent view controller from being displayed until the user clears the alert
-//            navigationController?.topViewController?.navigationItem.backBarButtonItem?.isEnabled = false
-//        }
-
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //let destVC = segue.destination as! TasksViewController
         guard let titleText = titleTextField.text, !titleText.isEmpty else {
