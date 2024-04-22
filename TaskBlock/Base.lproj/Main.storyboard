@@ -99,9 +99,9 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="completionToggle" destination="l8U-1d-PRi" id="vh7-Vo-sLi"/>
-                                    <outlet property="endDate" destination="2v9-x0-HQi" id="Wza-bO-gbs"/>
-                                    <outlet property="notes" destination="0Tk-4y-iT1" id="ZTt-zt-2kn"/>
-                                    <outlet property="startDate" destination="Tyu-cf-uhr" id="nck-qz-81F"/>
+                                    <outlet property="endDateLabel" destination="2v9-x0-HQi" id="Wza-bO-gbs"/>
+                                    <outlet property="notesLabel" destination="0Tk-4y-iT1" id="ZTt-zt-2kn"/>
+                                    <outlet property="startDateLabel" destination="Tyu-cf-uhr" id="nck-qz-81F"/>
                                     <outlet property="titleField" destination="RfS-nN-x1p" id="Euk-VJ-oIu"/>
                                     <segue destination="VBt-tN-PE0" kind="show" identifier="showDetailView" destinationCreationSelector="showDetailView:" id="YS1-YY-OPn"/>
                                 </connections>
@@ -131,7 +131,7 @@
         <scene sceneID="ZT8-BK-UQf">
             <objects>
                 <tableViewController storyboardIdentifier="NewEditTableViewController" title="New/Edit" id="VBt-tN-PE0" userLabel="Detail View" customClass="DetailViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="none" allowsSelection="NO" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="tOo-mr-tOy">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="none" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="tOo-mr-tOy">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -412,6 +412,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                        <connections>
+                                            <segue destination="7aj-vx-bHj" kind="show" identifier="CategoriesView" id="VEg-1c-iX4"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -430,12 +433,13 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" changesSelectionAsPrimaryAction="YES" id="FW4-yf-ejj">
                             <connections>
-                                <segue destination="tbU-vV-RxE" kind="unwind" unwindAction="unwindToTaskView:" id="Bmv-57-qOM"/>
+                                <action selector="doneButtonTapped:" destination="VBt-tN-PE0" id="wpe-Ig-tkH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="categoryLabel" destination="ksR-4q-Th3" id="mjV-Bn-WPr"/>
+                        <outlet property="categorySelectionLabel" destination="0Gg-wy-Th1" id="HlV-YO-kPk"/>
                         <outlet property="difficultyControl" destination="dk7-cI-lot" id="Fqv-bJ-DHy"/>
                         <outlet property="difficultyLabel" destination="iPf-cw-Aek" id="8yU-qQ-qLN"/>
                         <outlet property="endDatePicker" destination="iQj-hn-Sy8" id="wBE-QN-ghM"/>
@@ -447,6 +451,7 @@
                         <outlet property="startDatePicker" destination="97Q-Kg-IUT" id="M5M-Xq-odf"/>
                         <outlet property="startLabel" destination="D8n-Yq-bH5" id="TKQ-8g-Pdn"/>
                         <outlet property="titleTextField" destination="u2l-IG-9wh" id="VZD-IV-glj"/>
+                        <segue destination="tbU-vV-RxE" kind="unwind" identifier="unwindToTaskView" unwindAction="unwindToTaskView:" id="bMX-2E-p7R"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zMu-08-hGn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -454,16 +459,16 @@
             </objects>
             <point key="canvasLocation" x="1693" y="706"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Categories Table View Controller-->
         <scene sceneID="CKn-e5-vbr">
             <objects>
-                <tableViewController id="7aj-vx-bHj" sceneMemberID="viewController">
+                <tableViewController id="7aj-vx-bHj" customClass="CategoriesTableViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="8xW-xC-DPi">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dNy-Z7-SJ1">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="categoryCell" id="dNy-Z7-SJ1">
                                 <rect key="frame" x="0.0" y="50" width="430" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dNy-Z7-SJ1" id="Vhu-HE-8u1">
@@ -477,14 +482,19 @@
                             <outlet property="delegate" destination="7aj-vx-bHj" id="7bz-Um-x60"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem title="Item" id="6Ac-7b-98U"/>
-                    </toolbarItems>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="fkG-RB-Wn6">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="vWF-O0-T14">
+                            <connections>
+                                <action selector="addButtonTapped:" destination="7aj-vx-bHj" id="Rev-b8-lBN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gbr-Wl-yPt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2373" y="699"/>
+            <point key="canvasLocation" x="2690" y="698"/>
         </scene>
         <!--Settings-->
         <scene sceneID="vWz-UW-ied">
@@ -583,10 +593,10 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

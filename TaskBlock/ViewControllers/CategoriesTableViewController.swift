@@ -7,86 +7,125 @@
 
 import UIKit
 
-class CategoriesTableViewController: UITableViewController {
-    
-//    var categories = [String]()
+protocol DestinationDelegate: AnyObject {
+    func updateCategory(with text: String)
+}
 
+class CategoriesTableViewController: UITableViewController {
+    weak var delegate: DestinationDelegate?
+    var categories = [String]()
+    let defaults = UserDefaults.standard
+    var selectedCategory: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
+        categories = defaults.array(forKey: "categories") as? [String] ?? [String]()
+        addCategory("None", atStart: true)
+        delegate?.updateCategory(with: selectedCategory ?? "None")
         self.clearsSelectionOnViewWillAppear = false
-
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate?.updateCategory(with: selectedCategory ?? "None")
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        guard let count = UserDefaults().value(forKey: "categories") as? Int else {
-            return 0
-        }
-        return count
+        return categories.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
+        if categories[indexPath.row] == selectedCategory {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
+        cell.textLabel?.text = categories[indexPath.row]
         return cell
     }
+
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let key = "categories"
         if editingStyle == .delete {
             // Delete the row from the data source
+            categories.remove(at: indexPath.row)
+            defaults.set(categories, forKey: key)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-    */
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+                let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0))
+                cell?.accessoryType = .none
+            }
+        
+        if let cell = tableView.cellForRow(at: indexPath) {
+            selectedCategory = categories[indexPath.row]
+            cell.accessoryType = .checkmark
+            print("Selected category is now \(selectedCategory ?? "None")")
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            cell.accessoryType = .none
+        }
     }
-    */
 
-    /*
-    // MARK: - Navigation
+    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "New Category", message: "Enter a new category below", preferredStyle: .alert)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        alert.addTextField { textField in
+                textField.placeholder = "School, Work, etc."
+            }
+        
+        let createAction = UIAlertAction(title: "Create", style: .default) { action in
+            if let inputText = alert.textFields?.first?.text {
+                self.appendStringToUserDefaultsArray(value: inputText, forArrayKey: "categories")
+                self.tableView.reloadData()
+                print("User input: \(inputText)")
+                // Handle the text from the text field here
+            }
+        }
+    
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
+        })
+        alert.addAction(createAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
-    */
-
+    
+    func appendStringToUserDefaultsArray(value: String, forArrayKey key: String) {
+        // Retrieve the existing array or initialize a new one if it does not exist
+        categories = []
+        categories = defaults.array(forKey: key) as? [String] ?? [String]()
+        
+        // Append the new value
+        categories.append(value)
+        
+        // Save the updated array back to UserDefaults
+        defaults.set(categories, forKey: key)
+    }
+    
+    func addCategory(_ newCategory: String, atStart: Bool = false) {
+        var position = 0
+        if !atStart {
+            position = categories.count + 1
+        }
+        if !categories.contains(newCategory) {
+            categories.insert(newCategory, at: position)
+            defaults.set(categories, forKey: "categories")
+        }
+    }
 }

@@ -13,23 +13,22 @@ class TasksViewController: UITableViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    private var models = [ToDoItem]()
+    private var toDoItems = [ToDoItem]()
 
 //    var listArray = [NSManagedObject]()
     let dateFormatter: DateFormatter = DateFormatter()
     
     @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
-        guard let indexPath = tableView.indexPathForSelectedRow
-        else { fatalError("Nothing selected!") }
-        let todo = models[indexPath.row]
+        guard let indexPath = tableView.indexPathForSelectedRow else { fatalError("Nothing selected!") }
+        let todo = toDoItems[indexPath.row]
         return DetailViewController(coder: coder, todo: todo)    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.getAllItems()
+//        self.getAllItems()
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
         // Do any additional setup after loading the view.
-        for todo in models {
+        for todo in toDoItems {
             guard todo.title != nil else {
                 return
             }
@@ -38,7 +37,17 @@ class TasksViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.updateItems()
+//        for toDo in toDoItems {
+//            printTaskDetails(toDo)
+//        }
+        
+//        self.updateItems()
+
+        self.getAllItems()
+        
+//        for toDo in toDoItems {
+//            printTaskDetails(toDo)
+//        }
         tableView.reloadData()
     }
     
@@ -48,17 +57,14 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count
+        return toDoItems.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Set up cell
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ToDoCell.self)", for: indexPath) as? ToDoCell
-        else { fatalError("Could not create ToDo cell") }
-        let toDo = models[indexPath.row]
-        
-        // Set up completion toggle
-        if toDo.completed {            
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ToDoCell.self)", for: indexPath) as? ToDoCell else { fatalError("Could not create ToDo cell") }
+        let toDo = toDoItems[indexPath.row]        
+
+        if toDo.completed {
             cell.completionToggle.isSelected = true
         } else {
             cell.completionToggle.isSelected = false
@@ -68,68 +74,50 @@ class TasksViewController: UITableViewController {
         cell.completionToggle.tag = indexPath.row
         cell.completionToggle.addTarget(self, action: #selector(toggleWasSelected(sender:)), for: .touchUpInside)
 
-                
-        // Display notes in cell if a value is found
         if let notes = toDo.notes {
-            // Un-hide the label
-            cell.notes.isHidden = false
-            // Set the text value
-            cell.notes.text = notes
+            cell.notesLabel.isHidden = false
+            cell.notesLabel.text = notes
         } else {
-            // If the string property is nil, hide the label
-            cell.notes.isHidden = true
+            cell.notesLabel.isHidden = true
         }
         
-        // Display start date in cell if value is found
         if let startDate = toDo.start {
-            // Un-hide the label
-            cell.startDate.isHidden = false
-            // Set the text value
-            dateFormatter.timeStyle = .short
-            let startDateText = "Start: \(dateFormatter.string(from: startDate))"
-            cell.startDate.text = startDateText
+            cell.startDateLabel.isHidden = false
+            let startDateText = convertDateToString(startDate)
+            cell.startDateLabel.text = "Start: \(startDateText)"
         } else {
-            // If the string property is nil, hide the label
-            cell.notes.isHidden = true
+            cell.startDateLabel.isHidden = true
         }
         
-        // Display end date in cell if a value is found
         if let endDate = toDo.end {
-            // Un-hide the label
-            cell.endDate.isHidden = false
-            // Set the text value
-            dateFormatter.timeStyle = .short
-            let endDateText = "End: \(dateFormatter.string(from: endDate))"
-            cell.endDate.text = endDateText
+            cell.endDateLabel.isHidden = false
+            let endDateText = convertDateToString(endDate)
+            cell.endDateLabel.text = "End: \(endDateText)"
         } else {
-            // If the string property is nil, hide the label
-            cell.notes.isHidden = true
+            cell.endDateLabel.isHidden = true
         }
         
-        tableView.reloadRows(at: [indexPath], with: .automatic)
         cell.titleField.text = "\(toDo.title ?? "New Task")"
-        
-        
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let todo = models[indexPath.row]
+        let todo = toDoItems[indexPath.row]
         if editingStyle == .delete {
-            models.remove(at: indexPath.row)
-            print("Removed task id: \(todo.id), title: \(todo.title ?? "") todos array count: \(models.count)")
+            toDoItems.remove(at: indexPath.row)
+            print("Removed task id: \(todo.id), title: \(todo.title ?? "") todos array count: \(toDoItems.count)")
             self.deleteItem(item: todo)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        let indexPath = IndexPath(row: models.count, section: 0)
+        let indexPath = IndexPath(row: toDoItems.count, section: 0)
         let newItem = self.createItem()
         self.getAllItems()
         print("New task - setting it as ID: \(newItem.id)")
-        print("todos count: \(models.count)")
+        print("todos count: \(toDoItems.count)")
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
@@ -138,7 +126,7 @@ class TasksViewController: UITableViewController {
     @objc
     func toggleWasSelected(sender: UIButton) {
         let rowIndex: Int = sender.tag
-        let toDo = models[rowIndex]
+        let toDo = toDoItems[rowIndex]
         toDo.completed.toggle()
         print("Set task id: \(toDo.id) to completed: \(toDo.completed)")
         self.updateItems()
@@ -148,7 +136,11 @@ class TasksViewController: UITableViewController {
     // MARK: CoreData CRUD Actions
     func getAllItems() {
         do {
-            models = try context.fetch(ToDoItem.fetchRequest())
+            toDoItems = try context.fetch(ToDoItem.fetchRequest())
+            print("Fetched ToDos from CoreData:")
+            for toDoItem in toDoItems {
+                printTaskDetails(toDoItem)
+            }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -156,6 +148,10 @@ class TasksViewController: UITableViewController {
         catch {
             fatalError("Failed to get items")
         }
+    }
+    
+    func discardChanges() {
+        context.rollback()
     }
     
     func createItem() -> ToDoItem {
@@ -178,7 +174,6 @@ class TasksViewController: UITableViewController {
     
     func deleteItem(item: ToDoItem) {
         context.delete(item)
-        
         do {
             try context.save()
         }
@@ -191,6 +186,7 @@ class TasksViewController: UITableViewController {
         if context.hasChanges {
             do {
                 try context.save()
+                print("Saved CoreData items")
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -200,4 +196,14 @@ class TasksViewController: UITableViewController {
         }
     }
     
+    func printTaskDetails(_ toDo: ToDoItem) {
+        print("Task ID: \(toDo.id), title: \(toDo.title ?? "no title found"), start: \(convertDateToString(toDo.start ?? .now)), end: \(convertDateToString(toDo.end ?? .now)), notes: \(toDo.notes ?? "no notes found")")
+    }
+    
+    func convertDateToString(_ date: Date) -> String {
+        // Set the text value
+        dateFormatter.timeStyle = .short
+        let dateString = dateFormatter.string(from: date)
+        return dateString
+    }
 }

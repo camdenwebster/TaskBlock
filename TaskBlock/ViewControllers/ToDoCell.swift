@@ -11,9 +11,9 @@ class ToDoCell: UITableViewCell {
     
     @IBOutlet var completionToggle: UIButton!
     @IBOutlet var titleField: UILabel!
-    @IBOutlet var notes: UILabel!
-    @IBOutlet var startDate: UILabel!
-    @IBOutlet var endDate: UILabel!
+    @IBOutlet var notesLabel: UILabel!
+    @IBOutlet var startDateLabel: UILabel!
+    @IBOutlet var endDateLabel: UILabel!
         
     var toggleFilled: Bool = false
     
