@@ -8,6 +8,14 @@
 import UIKit
 
 class SettingsViewController: UITableViewController {
+    
+    var blocks = [String]()
+    var sections = ["General", "Day Settings", "Block Settings", "Feedback"]
+    var settingsItems = [
+        ["Calendar and Reminders Settings", "iCloud Settings"],
+        ["Day Start Time", "Day End Time"],
+        []
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()

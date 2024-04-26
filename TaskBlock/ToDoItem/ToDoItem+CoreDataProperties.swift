@@ -16,10 +16,11 @@ extension ToDoItem {
         return NSFetchRequest<ToDoItem>(entityName: "ToDoItem")
     }
 
+    @NSManaged public var assignedBlock: UUID
     @NSManaged public var category: String?
     @NSManaged public var difficulty: Int16
     @NSManaged public var end: Date?
-    @NSManaged public var id: String
+    @NSManaged public var id: UUID
     @NSManaged public var notes: String?
     @NSManaged public var priority: Int16
     @NSManaged public var size: Int16
@@ -27,6 +28,10 @@ extension ToDoItem {
     @NSManaged public var title: String?
     @NSManaged public var completed: Bool
     @NSManaged public var completedDate: Date?
+    
+    var duration: TimeInterval {
+        return end?.timeIntervalSince(start ?? .now) ?? 0
+    }
 
 }
 

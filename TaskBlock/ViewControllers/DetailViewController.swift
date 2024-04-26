@@ -150,7 +150,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Discard Changes", style: .destructive) { [ weak self ] _ in
             // Dismiss the current view controller after the user clears the alert
-            let vc = TasksViewController()
+            let vc = ToDoListViewController()
             vc.discardChanges()
             self?.navigationController?.popViewController(animated: true)
         }
@@ -229,7 +229,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        let vc = TasksViewController()
+        let vc = ToDoListViewController()
         vc.updateItems()
         performSegue(withIdentifier: "unwindToTaskView", sender: self)
     }

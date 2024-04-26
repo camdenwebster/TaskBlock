@@ -9,14 +9,16 @@ import UIKit
 import Foundation
 import CoreData
 
-class TasksViewController: UITableViewController {
+class ToDoListViewController: UITableViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     private var toDoItems = [ToDoItem]()
+    private var blockItems = [BlockItem]()
 
 //    var listArray = [NSManagedObject]()
     let dateFormatter: DateFormatter = DateFormatter()
+    
     
     @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
         guard let indexPath = tableView.indexPathForSelectedRow else { fatalError("Nothing selected!") }
@@ -53,7 +55,7 @@ class TasksViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return blockItems.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -112,6 +114,17 @@ class TasksViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sections = [String]()
+        
+        for block in blockItems {
+            sections.append(block.title ?? "Block Title")
+        }
+        
+        return sections[section]
+    }
+    
+    // MARK: - Actions
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
         let indexPath = IndexPath(row: toDoItems.count, section: 0)
         let newItem = self.createItem()
@@ -119,6 +132,11 @@ class TasksViewController: UITableViewController {
         print("New task - setting it as ID: \(newItem.id)")
         print("todos count: \(toDoItems.count)")
         tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    
+    @IBAction func scheduleButtonTapped(_ sender: UIBarButtonItem) {
+        print("Schedule button tapped")
     }
     
     @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
@@ -157,7 +175,7 @@ class TasksViewController: UITableViewController {
     func createItem() -> ToDoItem {
         let newItem = ToDoItem(context: context)
         newItem.title = "New Task"
-        newItem.id = UUID().uuidString
+        newItem.id = UUID()
         newItem.priority = 1
         newItem.difficulty = 1
         newItem.size = 1

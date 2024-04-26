@@ -4,15 +4,16 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tasks-->
+        <!--Today-->
         <scene sceneID="Rsa-tW-Xp9">
             <objects>
-                <tableViewController title="Tasks" id="d8q-oa-1mt" customClass="TasksViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Today" id="d8q-oa-1mt" customClass="ToDoListViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Z4G-G8-t8b">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -112,12 +113,19 @@
                             <outlet property="delegate" destination="d8q-oa-1mt" id="3h1-An-JYJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Tasks" id="yF1-ul-LTR">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="aDT-0d-ery">
-                            <connections>
-                                <action selector="addButtonTapped:" destination="d8q-oa-1mt" id="hHo-Fu-lqt"/>
-                            </connections>
-                        </barButtonItem>
+                    <navigationItem key="navigationItem" title="Today" id="yF1-ul-LTR">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="aDT-0d-ery">
+                                <connections>
+                                    <action selector="addButtonTapped:" destination="d8q-oa-1mt" id="hHo-Fu-lqt"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="arrow.up.and.down.and.sparkles" catalog="system" id="C4c-jP-ghv">
+                                <connections>
+                                    <action selector="scheduleButtonTapped:" destination="d8q-oa-1mt" id="TIc-7U-Hh6"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Z4G-G8-t8b" id="L4n-W1-Qlw"/>
@@ -125,7 +133,65 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dn5-zU-wev" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2158.6046511627906" y="-3.218884120171674"/>
+            <point key="canvasLocation" x="2041" y="-892"/>
+        </scene>
+        <!--Schedule-->
+        <scene sceneID="bCN-0h-sPj">
+            <objects>
+                <viewController title="Schedule" id="pa0-65-n0G" userLabel="Schedule" customClass="ScheduleViewController" customModule="TaskBlock" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BX1-Av-PRr">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="251" translatesAutoresizingMaskIntoConstraints="NO" id="snH-l1-1Rw">
+                                <rect key="frame" x="0.0" y="103" width="430" height="746"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iQR-V6-25J">
+                                        <rect key="frame" x="20" y="0.0" width="390" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="wyF-Ng-PoR"/>
+                                        </constraints>
+                                        <segments>
+                                            <segment title="First"/>
+                                            <segment title="Second"/>
+                                        </segments>
+                                    </segmentedControl>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uj5-AL-7Z0">
+                                        <rect key="frame" x="0.0" y="281" width="430" height="465"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="XBz-Qs-HSe"/>
+                                        </constraints>
+                                        <connections>
+                                            <segue destination="Eck-RC-x5m" kind="embed" id="5wp-qJ-p4Q"/>
+                                        </connections>
+                                    </containerView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Uj5-AL-7Z0" firstAttribute="width" secondItem="snH-l1-1Rw" secondAttribute="width" id="M7w-hS-Mlk"/>
+                                    <constraint firstAttribute="trailing" secondItem="iQR-V6-25J" secondAttribute="trailing" constant="20" symbolic="YES" id="UfT-j5-guG"/>
+                                    <constraint firstItem="iQR-V6-25J" firstAttribute="leading" secondItem="snH-l1-1Rw" secondAttribute="leading" constant="20" symbolic="YES" id="lPl-dB-Kb9"/>
+                                    <constraint firstItem="Uj5-AL-7Z0" firstAttribute="centerX" secondItem="snH-l1-1Rw" secondAttribute="centerX" id="nSu-kn-X0I"/>
+                                    <constraint firstItem="iQR-V6-25J" firstAttribute="top" secondItem="snH-l1-1Rw" secondAttribute="top" id="s3o-Wd-ir9"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SkZ-xx-USg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="snH-l1-1Rw" firstAttribute="height" secondItem="SkZ-xx-USg" secondAttribute="height" id="YaB-Cj-pUL"/>
+                            <constraint firstItem="snH-l1-1Rw" firstAttribute="width" secondItem="SkZ-xx-USg" secondAttribute="width" id="bhn-vi-93j"/>
+                            <constraint firstItem="snH-l1-1Rw" firstAttribute="centerY" secondItem="SkZ-xx-USg" secondAttribute="centerY" id="cin-Rc-Rmt"/>
+                            <constraint firstItem="snH-l1-1Rw" firstAttribute="centerX" secondItem="SkZ-xx-USg" secondAttribute="centerX" id="dZc-HI-Wcc"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="mgN-Bk-cEJ"/>
+                    <connections>
+                        <outlet property="scheduleListView" destination="Uj5-AL-7Z0" id="Nq9-pp-p8U"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Sh-9m-LP1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2306.5116279069766" y="650.8583690987125"/>
         </scene>
         <!--Detail View-->
         <scene sceneID="ZT8-BK-UQf">
@@ -192,7 +258,7 @@
                             <tableViewSection id="Uh7-Nn-09N">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="50" id="dnA-zP-e38">
-                                        <rect key="frame" x="20" y="214" width="390" height="50"/>
+                                        <rect key="frame" x="20" y="214.00000000000003" width="390" height="49.999999999999972"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dnA-zP-e38" id="LDS-dY-3e3">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="50"/>
@@ -457,7 +523,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zMu-08-hGn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="tbU-vV-RxE" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1693" y="706"/>
+            <point key="canvasLocation" x="3021" y="-892"/>
         </scene>
         <!--Categories Table View Controller-->
         <scene sceneID="CKn-e5-vbr">
@@ -494,7 +560,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gbr-Wl-yPt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2690" y="698"/>
+            <point key="canvasLocation" x="3959" y="-892"/>
         </scene>
         <!--Settings-->
         <scene sceneID="vWz-UW-ied">
@@ -523,7 +589,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oj2-kS-b77" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2158.6046511627906" y="1384.7639484978542"/>
+            <point key="canvasLocation" x="2247" y="1896"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="R13-PC-N54">
@@ -537,6 +603,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="GEQ-16-u6a" kind="relationship" relationship="viewControllers" id="CEe-Ue-asP"/>
+                        <segue destination="IQe-wW-rEl" kind="relationship" relationship="viewControllers" id="r7N-v0-a8P"/>
                         <segue destination="YTi-76-p2s" kind="relationship" relationship="viewControllers" id="0KG-NR-LoD"/>
                     </connections>
                 </tabBarController>
@@ -544,11 +611,11 @@
             </objects>
             <point key="canvasLocation" x="45" y="651"/>
         </scene>
-        <!--Tasks-->
+        <!--Today-->
         <scene sceneID="tVt-iN-32H">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GEQ-16-u6a" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tasks" image="checklist.checked" catalog="system" id="jMh-Gl-bqo"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GEQ-16-u6a" userLabel="Today" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Today" image="checklist.checked" catalog="system" id="jMh-Gl-bqo" userLabel="Today"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="akL-AJ-KKc">
                         <rect key="frame" x="0.0" y="59" width="430" height="96"/>
@@ -561,7 +628,26 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cdv-o9-FJr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1261.3953488372092" y="-2.5751072961373391"/>
+            <point key="canvasLocation" x="1130" y="-892"/>
+        </scene>
+        <!--Schedule-->
+        <scene sceneID="wzC-m7-AMf">
+            <objects>
+                <navigationController title="Schedule" automaticallyAdjustsScrollViewInsets="NO" id="IQe-wW-rEl" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Schedule" image="calendar.day.timeline.left" catalog="system" id="2km-qd-5Ds"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mRg-lE-4lq">
+                        <rect key="frame" x="0.0" y="59" width="430" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="pa0-65-n0G" kind="relationship" relationship="rootViewController" id="SQw-Ju-Ekx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uvP-41-10d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1407.9069767441861" y="650.8583690987125"/>
         </scene>
         <!--Settings-->
         <scene sceneID="RDc-cj-e61">
@@ -580,10 +666,27 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kel-Dg-d4A" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1260" y="1384.7639484978542"/>
+            <point key="canvasLocation" x="1261" y="1896"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="rkj-0S-aUy">
+            <objects>
+                <viewController id="Eck-RC-x5m" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WNH-6m-d4h">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="465"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="kmi-QB-iGs"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="agj-0L-f2k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3731" y="651"/>
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.up.and.down.and.sparkles" catalog="system" width="128" height="89"/>
+        <image name="calendar.day.timeline.left" catalog="system" width="128" height="91"/>
         <image name="checklist.checked" catalog="system" width="128" height="107"/>
         <image name="circle" catalog="system" width="128" height="123"/>
         <image name="circle.inset.filled" catalog="system" width="128" height="123"/>
@@ -593,10 +696,10 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
