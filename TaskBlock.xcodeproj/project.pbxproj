@@ -17,7 +17,7 @@
 		1943D4412BD6FDCE00122849 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1943D4402BD6FDCD00122849 /* ScheduleViewController.swift */; };
 		19683B112BBCFAC400457BFA /* ToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19683B102BBCFAC400457BFA /* ToDoCell.swift */; };
 		199782232B85B5BC00BCA16F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199782222B85B5BC00BCA16F /* SettingsViewController.swift */; };
-		199782252B85B5CC00BCA16F /* ToDoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199782242B85B5CC00BCA16F /* ToDoListViewController.swift */; };
+		199782252B85B5CC00BCA16F /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199782242B85B5CC00BCA16F /* InboxViewController.swift */; };
 		19B521102BDC2531007727F5 /* TaskBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B5210F2BDC2531007727F5 /* TaskBlockTests.swift */; };
 		19B521192BDC2A36007727F5 /* BlockItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B521172BDC2A36007727F5 /* BlockItem+CoreDataClass.swift */; };
 		19B5211A2BDC2A36007727F5 /* BlockItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B521182BDC2A36007727F5 /* BlockItem+CoreDataProperties.swift */; };
@@ -51,7 +51,7 @@
 		1943D4402BD6FDCD00122849 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		19683B102BBCFAC400457BFA /* ToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCell.swift; sourceTree = "<group>"; };
 		199782222B85B5BC00BCA16F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		199782242B85B5CC00BCA16F /* ToDoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListViewController.swift; sourceTree = "<group>"; };
+		199782242B85B5CC00BCA16F /* InboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		19B5210D2BDC2530007727F5 /* TaskBlockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskBlockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19B5210F2BDC2531007727F5 /* TaskBlockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBlockTests.swift; sourceTree = "<group>"; };
 		19B521172BDC2A36007727F5 /* BlockItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockItem+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 			children = (
 				1943D4402BD6FDCD00122849 /* ScheduleViewController.swift */,
 				199782222B85B5BC00BCA16F /* SettingsViewController.swift */,
-				199782242B85B5CC00BCA16F /* ToDoListViewController.swift */,
+				199782242B85B5CC00BCA16F /* InboxViewController.swift */,
 				19683B102BBCFAC400457BFA /* ToDoCell.swift */,
 				19DA03152B8EE1E900303FE2 /* DetailViewController.swift */,
 				19E478C42BD20E6300557640 /* CategoriesTableViewController.swift */,
@@ -284,7 +284,7 @@
 				19DA03162B8EE1E900303FE2 /* DetailViewController.swift in Sources */,
 				192C7D232B85A2FB00DBA8FB /* SceneDelegate.swift in Sources */,
 				19ED78572B9AC32700BDA1A7 /* ToDoModel.xcdatamodeld in Sources */,
-				199782252B85B5CC00BCA16F /* ToDoListViewController.swift in Sources */,
+				199782252B85B5CC00BCA16F /* InboxViewController.swift in Sources */,
 				19683B112BBCFAC400457BFA /* ToDoCell.swift in Sources */,
 				190D0E2E2BD189FB00AA6D7E /* ToDoItem+CoreDataClass.swift in Sources */,
 				190D0E2F2BD189FB00AA6D7E /* ToDoItem+CoreDataProperties.swift in Sources */,
