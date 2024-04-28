@@ -93,8 +93,8 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
 
     required init?(coder: NSCoder) { fatalError("This should never be called!") }
     
-    init?(coder: NSCoder, todo: ToDoItem) {
-        self.toDo = todo
+    init?(coder: NSCoder, toDo: ToDoItem) {
+        self.toDo = toDo
         super.init(coder: coder)
     }
 
@@ -242,7 +242,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         let vc = InboxViewController()
         vc.updateItems()
-        performSegue(withIdentifier: "unwindToTaskView", sender: self)
+        navigationController?.popViewController(animated: true)
     }
     
     func deleteTodo() {

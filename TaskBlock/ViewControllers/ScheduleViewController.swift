@@ -13,8 +13,14 @@ class ScheduleViewController: UIViewController {
     private var toDoItems = [ToDoItem]()
     private var blockItems = [BlockItem]()
     let toDoVC = InboxViewController()
+    
     @IBOutlet var tableView: UITableView!
     
+    @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
+        guard let indexPath = tableView.indexPathForSelectedRow else { fatalError("Nothing selected!") }
+        let toDo = toDoItems[indexPath.row]
+        return DetailViewController(coder: coder, toDo: toDo)
+    }
     
     
     override func viewDidLoad() {
@@ -102,17 +108,15 @@ class ScheduleViewController: UIViewController {
             print("No changes detected")
         }
     }
-    
-
 }
+
+
 // MARK: - TableViewDelegate
 extension ScheduleViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Header"
     }
-    
-    
 }
 
 // MARK: - TableViewDataSource
@@ -165,21 +169,6 @@ extension ScheduleViewController: UITableViewDataSource {
         
         return cell
     }
-    
-    //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    //        var sections = [String]()
-    //
-    //        for block in blockItems {
-    //            sections.append(block.title ?? "Block Title")
-    //        }
-    //
-    //        return sections[section]
-    //    }
-    
-    // MARK: - Table view data source
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return blockItems.count
-//    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let todo = toDoItems[indexPath.row]

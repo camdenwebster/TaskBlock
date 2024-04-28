@@ -1,6 +1,6 @@
 //
-//  TasksViewController.swift
-//  TabBarPickersDemoCamdenW
+//  InboxViewController.swift
+//  TaskBlock
 //
 //  Created by Camden Webster on 2/20/24.
 //
@@ -17,11 +17,12 @@ class InboxViewController: UITableViewController {
     
     @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
         guard let indexPath = tableView.indexPathForSelectedRow else { fatalError("Nothing selected!") }
-        let todo = toDoItems[indexPath.row]
-        return DetailViewController(coder: coder, todo: todo)    }
-    
+        let toDo = toDoItems[indexPath.row]
+        return DetailViewController(coder: coder, toDo: toDo)
+    }
     @IBOutlet var notesLabel: UILabel!
     
+    // MARK: - View lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
@@ -38,11 +39,12 @@ class InboxViewController: UITableViewController {
         self.getInboxItems()
     }
     
-
     
+    // MARK: - TableViewDataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return toDoItems.count
     }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "toDoItemCell", for: indexPath)
         let toDo = toDoItems[indexPath.row]
@@ -76,8 +78,6 @@ class InboxViewController: UITableViewController {
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
-    @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
-
     
     // MARK: CoreData CRUD Actions
     func getInboxItems() {
