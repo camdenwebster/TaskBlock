@@ -1,6 +1,6 @@
 //
-//  TasksViewController.swift
-//  TabBarPickersDemoCamdenW
+//  InboxViewController.swift
+//  TaskBlock
 //
 //  Created by Camden Webster on 2/20/24.
 //
@@ -9,25 +9,23 @@ import UIKit
 import Foundation
 import CoreData
 
-class TasksViewController: UITableViewController {
+class InboxViewController: UITableViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     private var toDoItems = [ToDoItem]()
-
-//    var listArray = [NSManagedObject]()
     let dateFormatter: DateFormatter = DateFormatter()
     
     @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
         guard let indexPath = tableView.indexPathForSelectedRow else { fatalError("Nothing selected!") }
-        let todo = toDoItems[indexPath.row]
-        return DetailViewController(coder: coder, todo: todo)    }
+        let toDo = toDoItems[indexPath.row]
+        return DetailViewController(coder: coder, toDo: toDo)
+    }
+    @IBOutlet var notesLabel: UILabel!
     
+    // MARK: - View lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.getAllItems()
         self.tabBarController?.delegate = UIApplication.shared.delegate as? UITabBarControllerDelegate
-        // Do any additional setup after loading the view.
         for todo in toDoItems {
             guard todo.title != nil else {
                 return
@@ -37,68 +35,25 @@ class TasksViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        for toDo in toDoItems {
-//            printTaskDetails(toDo)
-//        }
-        
-//        self.updateItems()
-
-        self.getAllItems()
-        
-//        for toDo in toDoItems {
-//            printTaskDetails(toDo)
-//        }
-        tableView.reloadData()
+        // Calling this at viewWillAppear instead of viewDidLoad because viewDidLoad will not get called when switching between tabs
+        self.getInboxItems()
     }
     
-    // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
+    // MARK: - TableViewDataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return toDoItems.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ToDoCell.self)", for: indexPath) as? ToDoCell else { fatalError("Could not create ToDo cell") }
-        let toDo = toDoItems[indexPath.row]        
-
-        if toDo.completed {
-            cell.completionToggle.isSelected = true
-        } else {
-            cell.completionToggle.isSelected = false
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "toDoItemCell", for: indexPath)
+        let toDo = toDoItems[indexPath.row]
         
-        cell.completionToggle.setTitle("", for: .normal)
-        cell.completionToggle.tag = indexPath.row
-        cell.completionToggle.addTarget(self, action: #selector(toggleWasSelected(sender:)), for: .touchUpInside)
-
         if let notes = toDo.notes {
-            cell.notesLabel.isHidden = false
-            cell.notesLabel.text = notes
-        } else {
-            cell.notesLabel.isHidden = true
+            cell.detailTextLabel?.isHidden = false
+            cell.detailTextLabel?.text = notes
         }
-        
-        if let startDate = toDo.start {
-            cell.startDateLabel.isHidden = false
-            let startDateText = convertDateToString(startDate)
-            cell.startDateLabel.text = "Start: \(startDateText)"
-        } else {
-            cell.startDateLabel.isHidden = true
-        }
-        
-        if let endDate = toDo.end {
-            cell.endDateLabel.isHidden = false
-            let endDateText = convertDateToString(endDate)
-            cell.endDateLabel.text = "End: \(endDateText)"
-        } else {
-            cell.endDateLabel.isHidden = true
-        }
-        
-        cell.titleField.text = "\(toDo.title ?? "New Task")"
-        
+        cell.textLabel?.text = toDo.title ?? "New Task"
         return cell
     }
     
@@ -112,31 +67,24 @@ class TasksViewController: UITableViewController {
         }
     }
     
+    
+    // MARK: - Actions
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
         let indexPath = IndexPath(row: toDoItems.count, section: 0)
         let newItem = self.createItem()
-        self.getAllItems()
+//        self.getAllItems()
         print("New task - setting it as ID: \(newItem.id)")
         print("todos count: \(toDoItems.count)")
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
-    @IBAction func unwindToTaskView(_ sender: UIStoryboardSegue) {}
-    
-    @objc
-    func toggleWasSelected(sender: UIButton) {
-        let rowIndex: Int = sender.tag
-        let toDo = toDoItems[rowIndex]
-        toDo.completed.toggle()
-        print("Set task id: \(toDo.id) to completed: \(toDo.completed)")
-        self.updateItems()
-        tableView.reloadData()
-    }
     
     // MARK: CoreData CRUD Actions
-    func getAllItems() {
+    func getInboxItems() {
+        
         do {
-            toDoItems = try context.fetch(ToDoItem.fetchRequest())
+            let uncompletedItems = try context.fetch(ToDoItem.fetchRequest()).filter { $0.completed == false }
+            toDoItems = uncompletedItems.filter { $0.start == nil }
             print("Fetched ToDos from CoreData:")
             for toDoItem in toDoItems {
                 printTaskDetails(toDoItem)
@@ -152,12 +100,13 @@ class TasksViewController: UITableViewController {
     
     func discardChanges() {
         context.rollback()
+        getInboxItems()
     }
     
     func createItem() -> ToDoItem {
         let newItem = ToDoItem(context: context)
         newItem.title = "New Task"
-        newItem.id = UUID().uuidString
+        newItem.id = UUID()
         newItem.priority = 1
         newItem.difficulty = 1
         newItem.size = 1
@@ -165,6 +114,7 @@ class TasksViewController: UITableViewController {
         
         do {
             try context.save()
+            toDoItems.append(newItem)
         }
         catch {
             fatalError("Failed to save item id: \(newItem.id), title: \(newItem.title ?? "")")
@@ -193,6 +143,8 @@ class TasksViewController: UITableViewController {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
+        } else {
+            print("No changes detected")
         }
     }
     

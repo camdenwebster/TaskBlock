@@ -50,6 +50,8 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         titleTextField.becomeFirstResponder()
         titleTextField.text = toDo.title
         titleTextField.delegate = self
+//        titleTextField.addTarget(self, action: #selector(view.textFieldDidChange(_:)), for: .editingChanged)
+
         
         // Set placeholder for notes view
         notesTextView.text = toDo.notes
@@ -64,7 +66,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         
         // Set up dates
         startDatePicker.date = toDo.start ?? .now
-        endDatePicker.date = toDo.end ?? .now
+        endDatePicker.date = toDo.end ?? (.now + 1800)
         
         // Set up segmented controls
         sizeControl.selectedSegmentIndex = Int(toDo.size)
@@ -91,8 +93,8 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
 
     required init?(coder: NSCoder) { fatalError("This should never be called!") }
     
-    init?(coder: NSCoder, todo: ToDoItem) {
-        self.toDo = todo
+    init?(coder: NSCoder, toDo: ToDoItem) {
+        self.toDo = toDo
         super.init(coder: coder)
     }
 
@@ -128,7 +130,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
 
     }
     
-    func textFieldDidChange(_ textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if let titleText = titleTextField.text {
             toDo.title = titleText
             print("Setting task id \(toDo.id) title to '\(toDo.title ?? "")'")
@@ -147,10 +149,11 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     
     // MARK: - Actions
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        titleTextField.resignFirstResponder()
         let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Discard Changes", style: .destructive) { [ weak self ] _ in
             // Dismiss the current view controller after the user clears the alert
-            let vc = TasksViewController()
+            let vc = InboxViewController()
             vc.discardChanges()
             self?.navigationController?.popViewController(animated: true)
         }
@@ -176,14 +179,22 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     }
     
     @IBAction func startDatePicker(_ sender: UIDatePicker) {
-        // Compare the dates
+        // Make sure start date cannot be set after end date
         if endDatePicker.date < startDatePicker.date {
             endDatePicker.date = startDatePicker.date
             toDo.end = endDatePicker.date
         }
+        
         toDo.start = startDatePicker.date
+        
+        // If end date has not yet been set, set it to the value already set in the end date picker in viewDidLoad
+        if toDo.end == nil {
+            toDo.end = endDatePicker.date
+        }
+        
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
+        
         print ("Setting end date to \(dateFormatter.string(from: toDo.end ?? .now)), start date: \(dateFormatter.string(from: toDo.start ?? .now))")
     }
     
@@ -229,9 +240,9 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        let vc = TasksViewController()
+        let vc = InboxViewController()
         vc.updateItems()
-        performSegue(withIdentifier: "unwindToTaskView", sender: self)
+        navigationController?.popViewController(animated: true)
     }
     
     func deleteTodo() {
