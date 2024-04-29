@@ -19,7 +19,7 @@ extension BlockItem {
     @NSManaged public var id: UUID?
     @NSManaged public var title: String?
     @NSManaged public var preferredDifficulty: Int16
-    @NSManaged public var preferredCategory: Int16
+    @NSManaged public var preferredCategory: String
     @NSManaged public var start: Date?
     @NSManaged public var end: Date?
 
