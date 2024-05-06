@@ -16,7 +16,7 @@ extension ToDoItem {
         return NSFetchRequest<ToDoItem>(entityName: "ToDoItem")
     }
 
-    @NSManaged public var assignedBlock: UUID
+    @NSManaged public var assignedBlock: UUID?
     @NSManaged public var category: String?
     @NSManaged public var difficulty: Int16
     @NSManaged public var end: Date?

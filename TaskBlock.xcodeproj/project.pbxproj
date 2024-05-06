@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		190D0E2E2BD189FB00AA6D7E /* ToDoItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190D0E2C2BD189FB00AA6D7E /* ToDoItem+CoreDataClass.swift */; };
 		190D0E2F2BD189FB00AA6D7E /* ToDoItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190D0E2D2BD189FB00AA6D7E /* ToDoItem+CoreDataProperties.swift */; };
+		19254BAF2BE2D7A500D4D0C5 /* AppearaceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19254BAE2BE2D7A500D4D0C5 /* AppearaceSettings.swift */; };
+		19254BB12BE3F41800D4D0C5 /* CalendarAndReminderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19254BB02BE3F41800D4D0C5 /* CalendarAndReminderSettings.swift */; };
+		192B535C2BE7488200CF53ED /* BlocksSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192B535B2BE7488200CF53ED /* BlocksSettings.swift */; };
+		192B535E2BE74B6100CF53ED /* iCloudSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192B535D2BE74B6100CF53ED /* iCloudSettings.swift */; };
+		192B53602BE74C6A00CF53ED /* DaySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192B535F2BE74C6A00CF53ED /* DaySettings.swift */; };
+		192B53622BE74C7200CF53ED /* AboutSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192B53612BE74C7200CF53ED /* AboutSettings.swift */; };
 		192C7D212B85A2FB00DBA8FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192C7D202B85A2FB00DBA8FB /* AppDelegate.swift */; };
 		192C7D232B85A2FB00DBA8FB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192C7D222B85A2FB00DBA8FB /* SceneDelegate.swift */; };
 		192C7D282B85A2FB00DBA8FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 192C7D262B85A2FB00DBA8FB /* Main.storyboard */; };
@@ -16,13 +22,15 @@
 		192C7D2D2B85A30000DBA8FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 192C7D2B2B85A30000DBA8FB /* LaunchScreen.storyboard */; };
 		1943D4412BD6FDCE00122849 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1943D4402BD6FDCD00122849 /* ScheduleViewController.swift */; };
 		19683B112BBCFAC400457BFA /* ToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19683B102BBCFAC400457BFA /* ToDoCell.swift */; };
+		198ECE9C2BE1D44500B9062D /* SettingsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198ECE9B2BE1D44500B9062D /* SettingsDetailViewController.swift */; };
+		198ECE9E2BE1D6EF00B9062D /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198ECE9D2BE1D6EF00B9062D /* SettingModel.swift */; };
+		198ECEA12BE1DBDF00B9062D /* SettingsUIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198ECEA02BE1DBDF00B9062D /* SettingsUIComponent.swift */; };
 		199782232B85B5BC00BCA16F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199782222B85B5BC00BCA16F /* SettingsViewController.swift */; };
 		199782252B85B5CC00BCA16F /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199782242B85B5CC00BCA16F /* InboxViewController.swift */; };
 		19B521102BDC2531007727F5 /* TaskBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B5210F2BDC2531007727F5 /* TaskBlockTests.swift */; };
 		19B521192BDC2A36007727F5 /* BlockItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B521172BDC2A36007727F5 /* BlockItem+CoreDataClass.swift */; };
 		19B5211A2BDC2A36007727F5 /* BlockItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B521182BDC2A36007727F5 /* BlockItem+CoreDataProperties.swift */; };
 		19DA03162B8EE1E900303FE2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DA03152B8EE1E900303FE2 /* DetailViewController.swift */; };
-		19DD8C232B8621D700239601 /* ToDoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DD8C222B8621D700239601 /* ToDoModel.swift */; };
 		19E0DF3D2BDA8B390094575E /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E0DF3C2BDA8B390094575E /* Day.swift */; };
 		19E478C52BD20E6300557640 /* CategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E478C42BD20E6300557640 /* CategoriesTableViewController.swift */; };
 		19ED78572B9AC32700BDA1A7 /* ToDoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19ED78552B9AC32700BDA1A7 /* ToDoModel.xcdatamodeld */; };
@@ -41,6 +49,12 @@
 /* Begin PBXFileReference section */
 		190D0E2C2BD189FB00AA6D7E /* ToDoItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		190D0E2D2BD189FB00AA6D7E /* ToDoItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		19254BAE2BE2D7A500D4D0C5 /* AppearaceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearaceSettings.swift; sourceTree = "<group>"; };
+		19254BB02BE3F41800D4D0C5 /* CalendarAndReminderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAndReminderSettings.swift; sourceTree = "<group>"; };
+		192B535B2BE7488200CF53ED /* BlocksSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksSettings.swift; sourceTree = "<group>"; };
+		192B535D2BE74B6100CF53ED /* iCloudSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudSettings.swift; sourceTree = "<group>"; };
+		192B535F2BE74C6A00CF53ED /* DaySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySettings.swift; sourceTree = "<group>"; };
+		192B53612BE74C7200CF53ED /* AboutSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSettings.swift; sourceTree = "<group>"; };
 		192C7D1D2B85A2FB00DBA8FB /* TaskBlock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskBlock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		192C7D202B85A2FB00DBA8FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		192C7D222B85A2FB00DBA8FB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +64,9 @@
 		192C7D2E2B85A30000DBA8FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1943D4402BD6FDCD00122849 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		19683B102BBCFAC400457BFA /* ToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCell.swift; sourceTree = "<group>"; };
+		198ECE9B2BE1D44500B9062D /* SettingsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailViewController.swift; sourceTree = "<group>"; };
+		198ECE9D2BE1D6EF00B9062D /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
+		198ECEA02BE1DBDF00B9062D /* SettingsUIComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUIComponent.swift; sourceTree = "<group>"; };
 		199782222B85B5BC00BCA16F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		199782242B85B5CC00BCA16F /* InboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		19B5210D2BDC2530007727F5 /* TaskBlockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskBlockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,7 +74,6 @@
 		19B521172BDC2A36007727F5 /* BlockItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		19B521182BDC2A36007727F5 /* BlockItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlockItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		19DA03152B8EE1E900303FE2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		19DD8C222B8621D700239601 /* ToDoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoModel.swift; sourceTree = "<group>"; };
 		19E0DF3C2BDA8B390094575E /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		19E478C42BD20E6300557640 /* CategoriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewController.swift; sourceTree = "<group>"; };
 		19ED78562B9AC32700BDA1A7 /* ToDoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDoModel.xcdatamodel; sourceTree = "<group>"; };
@@ -127,6 +143,21 @@
 			path = TaskBlock;
 			sourceTree = "<group>";
 		};
+		198ECE9F2BE1DBB300B9062D /* SettingModel */ = {
+			isa = PBXGroup;
+			children = (
+				198ECE9D2BE1D6EF00B9062D /* SettingModel.swift */,
+				198ECEA02BE1DBDF00B9062D /* SettingsUIComponent.swift */,
+				19254BAE2BE2D7A500D4D0C5 /* AppearaceSettings.swift */,
+				19254BB02BE3F41800D4D0C5 /* CalendarAndReminderSettings.swift */,
+				192B535B2BE7488200CF53ED /* BlocksSettings.swift */,
+				192B535D2BE74B6100CF53ED /* iCloudSettings.swift */,
+				192B535F2BE74C6A00CF53ED /* DaySettings.swift */,
+				192B53612BE74C7200CF53ED /* AboutSettings.swift */,
+			);
+			path = SettingModel;
+			sourceTree = "<group>";
+		};
 		19B5210E2BDC2531007727F5 /* TaskBlockTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +191,7 @@
 				19683B102BBCFAC400457BFA /* ToDoCell.swift */,
 				19DA03152B8EE1E900303FE2 /* DetailViewController.swift */,
 				19E478C42BD20E6300557640 /* CategoriesTableViewController.swift */,
+				198ECE9B2BE1D44500B9062D /* SettingsDetailViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -167,7 +199,7 @@
 		19E478C32BD20E0900557640 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				19DD8C222B8621D700239601 /* ToDoModel.swift */,
+				198ECE9F2BE1DBB300B9062D /* SettingModel */,
 				19E0DF3C2BDA8B390094575E /* Day.swift */,
 			);
 			path = Models;
@@ -219,7 +251,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					192C7D1C2B85A2FB00DBA8FB = {
 						CreatedOnToolsVersion = 15.1;
@@ -274,21 +306,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				198ECE9C2BE1D44500B9062D /* SettingsDetailViewController.swift in Sources */,
 				19E0DF3D2BDA8B390094575E /* Day.swift in Sources */,
+				192B535E2BE74B6100CF53ED /* iCloudSettings.swift in Sources */,
+				192B535C2BE7488200CF53ED /* BlocksSettings.swift in Sources */,
+				198ECEA12BE1DBDF00B9062D /* SettingsUIComponent.swift in Sources */,
 				1943D4412BD6FDCE00122849 /* ScheduleViewController.swift in Sources */,
 				192C7D212B85A2FB00DBA8FB /* AppDelegate.swift in Sources */,
+				19254BAF2BE2D7A500D4D0C5 /* AppearaceSettings.swift in Sources */,
 				19B521192BDC2A36007727F5 /* BlockItem+CoreDataClass.swift in Sources */,
 				19B5211A2BDC2A36007727F5 /* BlockItem+CoreDataProperties.swift in Sources */,
+				192B53622BE74C7200CF53ED /* AboutSettings.swift in Sources */,
 				199782232B85B5BC00BCA16F /* SettingsViewController.swift in Sources */,
 				19E478C52BD20E6300557640 /* CategoriesTableViewController.swift in Sources */,
 				19DA03162B8EE1E900303FE2 /* DetailViewController.swift in Sources */,
+				19254BB12BE3F41800D4D0C5 /* CalendarAndReminderSettings.swift in Sources */,
 				192C7D232B85A2FB00DBA8FB /* SceneDelegate.swift in Sources */,
+				192B53602BE74C6A00CF53ED /* DaySettings.swift in Sources */,
 				19ED78572B9AC32700BDA1A7 /* ToDoModel.xcdatamodeld in Sources */,
 				199782252B85B5CC00BCA16F /* InboxViewController.swift in Sources */,
 				19683B112BBCFAC400457BFA /* ToDoCell.swift in Sources */,
+				198ECE9E2BE1D6EF00B9062D /* SettingModel.swift in Sources */,
 				190D0E2E2BD189FB00AA6D7E /* ToDoItem+CoreDataClass.swift in Sources */,
 				190D0E2F2BD189FB00AA6D7E /* ToDoItem+CoreDataProperties.swift in Sources */,
-				19DD8C232B8621D700239601 /* ToDoModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,6 +551,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = V7HLP74XY3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
@@ -533,6 +574,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = V7HLP74XY3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;

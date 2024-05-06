@@ -50,8 +50,12 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
         titleTextField.becomeFirstResponder()
         titleTextField.text = toDo.title
         titleTextField.delegate = self
-//        titleTextField.addTarget(self, action: #selector(view.textFieldDidChange(_:)), for: .editingChanged)
-
+        NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(textFieldDidChange),
+                    name: UITextField.textDidChangeNotification,
+                    object: titleTextField
+                )
         
         // Set placeholder for notes view
         notesTextView.text = toDo.notes
@@ -130,7 +134,14 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
 
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+//    func textFieldDidChange(_ textField: UITextField) {
+//        if let titleText = titleTextField.text {
+//            toDo.title = titleText
+//            print("Setting task id \(toDo.id) title to '\(toDo.title ?? "")'")
+//        }
+//    }
+    
+    @objc func textFieldDidChange(notification: NSNotification) {
         if let titleText = titleTextField.text {
             toDo.title = titleText
             print("Setting task id \(toDo.id) title to '\(toDo.title ?? "")'")
@@ -145,11 +156,14 @@ class DetailViewController: UITableViewController, UITextFieldDelegate, UITextVi
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return view.endEditing(true)
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     
     // MARK: - Actions
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        titleTextField.resignFirstResponder()
         let alert = UIAlertController(title: "Are you sure?", message: "Changes will be lost", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Discard Changes", style: .destructive) { [ weak self ] _ in
             // Dismiss the current view controller after the user clears the alert

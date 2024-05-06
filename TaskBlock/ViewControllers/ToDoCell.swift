@@ -25,6 +25,12 @@ class ToDoCell: UITableViewCell {
     }
     
     func enableUIElements(_ state: Bool = true) {
+        if state == false {
+            completionToggle.tintColor = .lightGray
+        } else {
+            completionToggle.tintColor = .systemBlue
+        }
+        
         titleField.isEnabled = state
         notesLabel.isEnabled = state
         startDateLabel.isEnabled = state
