@@ -12,6 +12,7 @@ class ScheduleViewController: UIViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     private var toDoItems = [ToDoItem]()
     private var blockItems = [BlockItem]()
+    private var schedule = [[ToDoItem]]()
     let toDoVC = InboxViewController()
     
     @IBOutlet var tableView: UITableView!
@@ -22,16 +23,58 @@ class ScheduleViewController: UIViewController {
         return DetailViewController(coder: coder, toDo: toDo)
     }
     
-    
+    // MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Adding blocks for testing purposes
+        do {
+            let block1 = BlockItem(context: context)
+            block1.id = UUID()
+            block1.title = "Block 1"
+            block1.preferredCategory = "School"
+            block1.preferredDifficulty = 2
+            block1.start = setTimeWithTodaysDate(hour: 8)
+            block1.end = setTimeWithTodaysDate(hour: 10)
+//            blockItems.append(block1)
+            
+            let block2 = BlockItem(context: context)
+            block2.id = UUID()
+            block2.title = "Block 2"
+            block2.preferredCategory = "Work"
+            block2.preferredDifficulty = 1
+            block2.start = setTimeWithTodaysDate(hour: 10)
+            block2.end = setTimeWithTodaysDate(hour: 12)
+//            blockItems.append(block2)
+            
+            let block3 = BlockItem(context: context)
+            block3.id = UUID()
+            block3.title = "Block 3"
+            block3.preferredCategory = "Work"
+            block3.preferredDifficulty = 1
+            block3.start = setTimeWithTodaysDate(hour: 13)
+            block3.end = setTimeWithTodaysDate(hour: 16)
+//            blockItems.append(block3)
+            
+            
+            try context.save()
+            
+            print("Found \(blockItems.count) blocks")
+
+        }
+        catch {
+            fatalError("Failed to save blocks")
+        }
+        
         for todo in toDoItems {
+            // Check for title
             guard todo.title != nil else {
                 return
             }
             print("Loading item \(todo.title ?? "New task") into Schedule view")
+            
 
         }
     }
@@ -44,7 +87,9 @@ class ScheduleViewController: UIViewController {
             toDoVC.printTaskDetails(toDo)
         }
         // Calling this at viewWillAppear instead of viewDidLoad because viewDidLoad will not get called when switching between tabs
+        self.getBlocks()
         self.getScheduledItems()
+        
     }
     
     
@@ -64,6 +109,31 @@ class ScheduleViewController: UIViewController {
     
     
     // MARK: - CoreData actions
+    func getBlocks() {
+        do {
+            blockItems = try context.fetch(BlockItem.fetchRequest())
+            blockItems.sort { (block1, block2) -> Bool in
+                switch (block1.title, block2.title) {
+                case (let title1?, let title2?):
+                    return title1 < title2
+                case (nil, _):
+                    return false
+                case (_, nil):
+                    return true
+                }
+            }
+            print("Fetched Blocks from CoreData:")
+            for block in blockItems {
+                print("Block ID: \(block.id), Block title: \(block.title ?? "New block")")
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        } catch {
+            fatalError("Failed to get Blocks from CoreData")
+        }
+    }
+    
     func getScheduledItems() {
         do {
             // Only get toDoItems which have a start date
@@ -84,12 +154,17 @@ class ScheduleViewController: UIViewController {
             for toDoItem in toDoItems {
                 toDoVC.printTaskDetails(toDoItem)
             }
+            
+            for block in blockItems {
+                schedule.append(block.addToDoItemsToBlock(toDoItems))
+            }
+            
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
         catch {
-            fatalError("Failed to get items")
+            fatalError("Failed to get ToDos from CoreData")
         }
     }
     
@@ -108,6 +183,17 @@ class ScheduleViewController: UIViewController {
             print("No changes detected")
         }
     }
+    
+    func setTimeWithTodaysDate(hour: Int) -> Date {
+        let currentDate = Date()
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .day], from: currentDate)
+        components.hour = hour
+        components.minute = 0
+        components.timeZone = TimeZone.current
+        
+        return calendar.date(from: components)!
+    }
 }
 
 
@@ -115,7 +201,7 @@ class ScheduleViewController: UIViewController {
 extension ScheduleViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Header"
+        return blockItems[section].title
     }
 }
 
@@ -123,12 +209,16 @@ extension ScheduleViewController: UITableViewDelegate {
 extension ScheduleViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return toDoItems.count
+        return schedule[section].count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return blockItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ToDoCell.self)", for: indexPath) as? ToDoCell else { fatalError("Could not create ToDo cell") }
-        let toDo = toDoItems[indexPath.row]
+        let toDo = schedule[indexPath.section][indexPath.row]
 
         if toDo.completed {
             cell.completionToggle.isSelected = true
@@ -136,9 +226,11 @@ extension ScheduleViewController: UITableViewDataSource {
         } else {
             cell.completionToggle.isSelected = false
             cell.enableUIElements(true)
+            
         }
         
         cell.completionToggle.setTitle("", for: .normal)
+        
         cell.completionToggle.tag = indexPath.row
         cell.completionToggle.addTarget(self, action: #selector(toggleWasSelected(sender:)), for: .touchUpInside)
 
@@ -181,4 +273,7 @@ extension ScheduleViewController: UITableViewDataSource {
     }
     
 }
+
+
+
 
