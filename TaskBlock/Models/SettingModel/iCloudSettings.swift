@@ -8,12 +8,13 @@
 import Foundation
 import UIKit
 
-struct iCloudSettings: SettingsSubMenu {
-    var settings: [[Setting]] {
+struct iCloudSettings: SettingsSubMenuConfig {
+    var sections: [String]? = ["iCloud Sync Status"]
+    var settings: [[SettingsSubMenuItem]] {
         [
             [
-                Setting(identifier: "syncStatus", title: "Fully Synced", description: "Current sync status", symbol: nil, type: .text),
-                Setting(identifier: "syncNowButton", title: "Sync Now", description: "Tap to sync with iCloud", symbol: nil, type: .button)
+                SettingsSubMenuItem(identifier: "syncStatus", title: "Fully Synced", description: "Current sync status", symbol: nil, type: .text),
+                SettingsSubMenuItem(identifier: "syncNowButton", title: "Sync Now", description: "Tap to sync with iCloud", symbol: nil, type: .button)
             ]
         ]
     }

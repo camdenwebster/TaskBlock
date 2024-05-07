@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 
-struct BlocksSettings: SettingsSubMenu {
-    var settings: [[Setting]] = [
+struct BlocksSettings: SettingsSubMenuConfig {
+    var sections: [String]? = ["Blocks", "Add"]
+    var settings: [[SettingsSubMenuItem]] = [
         [
         
         ],
         [
-            Setting(identifier: "addBlock", title: "Add Block", description: "Tap button to add a new block", symbol: nil, type: .button)
+            SettingsSubMenuItem(identifier: "addBlock", title: "Add Block", description: "Tap button to add a new block", symbol: nil, type: .button)
         ]
     ]
 }

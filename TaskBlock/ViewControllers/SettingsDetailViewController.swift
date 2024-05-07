@@ -8,36 +8,48 @@
 import UIKit
 
 class SettingsDetailViewController: UITableViewController {
+    
     weak var delegate: DestinationDelegate?
-    var item: Setting
+    var item: SettingsMainMenuItem
     var sections = [String]()
-    var settings = [[Setting]]()
+    var settings = [[SettingsSubMenuItem]]()
     var selectedIndexPaths: [Int: IndexPath] = [:]
-//    let componentFactory = SettingsComponentFactory()
-    var selectedItem: String?
-    let defaults = UserDefaults.standard
+//    var selectedOptions: [Int:Int] = [:]
+    var dictFromDefaults = [String:Any]()
+//    {
+//        didSet {
+//            // Save the new selections to UserDefaults
+//            UserDefaults.standard.set(selectedOptions, forKey: item.identifier)
+//            // Update the table view
+//            tableView.reloadData()
+//        }
+//    }
+    
     let settingsVC = SettingsViewController()
     var initiallySelectedItems = [Any?]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = item.title
-        let settingsConfig = getSettingsSubMenuConfig(item: item)
-        settings = settingsConfig.settings
-        sections = item.subSections ?? ["Section 1", "Section 2"]
-        for section in sections {
-            let item = fetchValueForKey(section)
-            initiallySelectedItems.append(item)
-            
-            print("Initially selected item for \(section) is \(item ?? "item")")
-        }
+        settings = item.subMenu.settings
+        sections = item.subMenu.sections ?? ["Section 1", "Section 2"]
         self.clearsSelectionOnViewWillAppear = false
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "settingsDetailCell")
+        // Load the initial selections from UserDefaults
+        if let userDefaultsDict = fetchDictFromDefaults(item.identifier) {
+            print("Loaded user defaults \(userDefaultsDict) at viewDidLoad")
+//            selectedIndexPaths =
+            dictFromDefaults = userDefaultsDict
+        } else {
+            print("Could not load user defaaults at viewDidLoad")
+        }
     }
     
     
     required init?(coder: NSCoder) { fatalError("This should never be called!") }
     
-    init?(coder: NSCoder, item: Setting) {
+    init?(coder: NSCoder, item: SettingsMainMenuItem) {
         self.item = item
         super.init(coder: coder)
     }
@@ -57,36 +69,35 @@ class SettingsDetailViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsDetailCell", for: indexPath)
         let setting = settings[indexPath.section][indexPath.row]
-        let cellConfig = SettingsDetailCell(settingToUseForConfig: setting, parentScreen: item.identifier, selectedItem: selectedItem ?? "Selected Item")
-        cell.textLabel?.textColor = cellConfig.configureTextColor()
+        
+
+        cell.textLabel?.textColor = setting.textColor
         cell.textLabel?.text = setting.title
         cell.textLabel?.numberOfLines = 3
         
-//        if setting.identifier != settingsVC.initialSettings[section] {
-//            cell.accessoryType = cellConfig.configureAccessory()
-//        } else {
-//            cell.accessoryType = .checkmark
-//        }
-        if setting.identifier == selectedItem {
+        if let selectedIndexPath = selectedIndexPaths[indexPath.section], selectedIndexPath == indexPath {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
         }
-        cell.isUserInteractionEnabled = cellConfig.configureUserInteraction()
+        
+        cell.isUserInteractionEnabled = setting.userInteractionEnabled
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+                
+        // Update the selected option for the section
+//        selectedOptions[indexPath.section] = indexPath.row
         let section = sections[indexPath.section]
         let setting = settings[indexPath.section][indexPath.row]
         
-        selectedItem = setting.identifier
-        
-        print("Tapped \(selectedItem ?? "cellName") cell")
-        
+//        selectedIndexPaths[indexPath.section] = indexPath
+                
         switch setting.type {
         case .checkmark:
-            updateCurrentlySelectedItem(tableView, indexPath: indexPath)
+            updateCurrentlySelectedItem(indexPath: indexPath)
             if section == "Theme" {
                 let settingsConfig = AppearaceSettings()
                 settingsConfig.switchAppearance(setting)
@@ -102,26 +113,8 @@ class SettingsDetailViewController: UITableViewController {
         return sections[section]
     }
     
-    func getSettingsSubMenuConfig(item: Setting) -> SettingsSubMenu {
-        switch item.identifier {
-        case "appearance":
-            return AppearaceSettings()
-        case "calendarReminderSettings":
-            return CalendarAndReminderSettings()
-        case "iCloudSettings":
-            return iCloudSettings()
-        case "blockSettings":
-            return BlocksSettings()
-        case "daySettings":
-            return DaySettings()
-        case "about":
-            return AboutSettings()
-        default:
-            return AppearaceSettings()
-        }
-    }
     
-    func updateCurrentlySelectedItem(_ tableView: UITableView, indexPath: IndexPath) {
+    func updateCurrentlySelectedItem(indexPath: IndexPath) {
         // Check if the selected index path is already selected
         if let selectedIndexPath = selectedIndexPaths[indexPath.section], selectedIndexPath == indexPath {
             // Deselect the row by removing its selection
@@ -147,6 +140,33 @@ class SettingsDetailViewController: UITableViewController {
 //        defaults.set(userSettings, forKey: item.identifier)
 //    }
     
+    func addNewKeyValuePair(key: String, value: String, toDictionary dictionaryKey: String) {
+        let defaults = UserDefaults.standard
+        
+        // Retrieve the existing dictionary or create a new one if it doesn't exist
+        var dictionary = defaults.dictionary(forKey: dictionaryKey) ?? [String: Any]()
+        
+        // Add the new key/value pair
+        dictionary[key] = value
+        
+        // Save the updated dictionary back to UserDefaults
+        defaults.set(dictionary, forKey: dictionaryKey)
+    }
+
+    
+    func fetchDictFromDefaults(_ dictionary: String) -> [String:Any]? {
+        let defaults = UserDefaults.standard
+
+        // Retrieve the dictionary from UserDefaults
+        if let settingsDictionary = defaults.dictionary(forKey: item.identifier) {
+            // Retrieve the string value using the dictionary key
+            return settingsDictionary
+        } else {
+            print("No dictionary found for key '\(item.identifier)'.")
+            return nil
+        }
+    }
+    
     func fetchValueForKey(_ dictionaryKey: String) -> Any? {
         let defaults = UserDefaults.standard
 
@@ -154,6 +174,7 @@ class SettingsDetailViewController: UITableViewController {
         if let settingsDictionary = defaults.dictionary(forKey: item.identifier) {
             // Retrieve the string value using the dictionary key
             if let value = settingsDictionary[dictionaryKey] as? String {
+                print("Read value \(value) for key \(dictionaryKey) from defaults")
                 return value
             } else {
                 print("The value for key '\(dictionaryKey)' is not a String or does not exist.")
@@ -167,11 +188,13 @@ class SettingsDetailViewController: UITableViewController {
     
     func updateDictionary(key: String, value: String) {
         let defaults = UserDefaults.standard
-
-        if var userSettings = defaults.dictionary(forKey: item.identifier) as? [String: String] {
+        let dictionaryKey = item.identifier
+        if var userSettings = defaults.dictionary(forKey: dictionaryKey) as? [String: String] {
             userSettings[key] = value
             defaults.set(userSettings, forKey: item.identifier)
             print("Set \(value) value for key \(key)")
+        } else {
+            addNewKeyValuePair(key: key, value: value, toDictionary: dictionaryKey)
         }
     }
 
