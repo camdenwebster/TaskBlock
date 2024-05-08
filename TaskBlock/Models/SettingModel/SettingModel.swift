@@ -67,7 +67,7 @@ class SettingsMainMenuItem: SettingItem {
     init(identifier: String, title: String, description: String? = nil, type: SettingType?, accessory: UITableViewCell.AccessoryType? = nil, symbol: UIImage?, subMenu: SettingsSubMenuConfig) {
         self.symbol = symbol
         self.subMenu = subMenu
-        super.init(identifier: identifier, title: title, type: type)
+        super.init(identifier: identifier, title: title, type: type, accessory: accessory)
     }
     
 //    func getSettingsSubMenuItems(item: SettingsMainMenuItem) -> [[SettingsSubMenuItem]] {
@@ -99,6 +99,6 @@ class SettingsSubMenuItem: SettingItem {
     
     init(identifier: String, title: String, description: String?, accessory: UITableViewCell.AccessoryType? = nil, symbol: UIImage?, type: SettingType?, value: Any? = nil, subSections: [String]? = nil) {
         self.value = value
-        super.init(identifier: identifier, title: title, type: type)
+        super.init(identifier: identifier, title: title, type: type, accessory: accessory)
     }
 }

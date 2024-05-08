@@ -12,13 +12,13 @@ struct AppearaceSettings: SettingsSubMenuConfig {
     var sections: [String]? = ["Theme", "Inbox Placement"]
     var settings: [[SettingsSubMenuItem]] = [
         [
-            SettingsSubMenuItem(identifier: "matchSystem", title: "Match System", description: "Sets display theme to match system setting", symbol: nil, type: .checkmark),
-            SettingsSubMenuItem(identifier: "light", title: "Light", description: "Sets display theme to Light Mode", symbol: nil, type: .checkmark),
-            SettingsSubMenuItem(identifier: "dark", title: "Dark", description: "Sets display theme to Dark Mode", symbol: nil, type: .checkmark)
+            SettingsSubMenuItem(identifier: "matchSystem", title: "Match System", description: "Sets display theme to match system setting", accessory: .checkmark, symbol: nil, type: .checkmark),
+            SettingsSubMenuItem(identifier: "light", title: "Light", description: "Sets display theme to Light Mode", accessory: .checkmark, symbol: nil, type: .checkmark),
+            SettingsSubMenuItem(identifier: "dark", title: "Dark", description: "Sets display theme to Dark Mode", accessory: .checkmark, symbol: nil, type: .checkmark)
         ],
         [
-            SettingsSubMenuItem(identifier: "inboxAbove", title: "Above Schedule", description: "Places the inbox above the schedule", symbol: nil, type: .checkmark),
-            SettingsSubMenuItem(identifier: "inboxBelow", title: "Below Schedule", description: "Places the inbox Below the schedule", symbol: nil, type: .checkmark)
+            SettingsSubMenuItem(identifier: "inboxAbove", title: "Above Schedule", description: "Places the inbox above the schedule", accessory: .checkmark, symbol: nil, type: .checkmark),
+            SettingsSubMenuItem(identifier: "inboxBelow", title: "Below Schedule", description: "Places the inbox Below the schedule", accessory: .checkmark, symbol: nil, type: .checkmark)
         ]
      ]
     

@@ -36,6 +36,9 @@ extension BlockItem {
 //        let manuallyAssignedToDos = toDos.filter { $0.assignedBlock != nil && $0.assignedBlock == id }
         let toDosMatchingPreferredCategory = toDos.filter { $0.category == preferredCategory }
         let toDosInBlockTimeRange = toDosMatchingPreferredCategory.filter { $0.start ?? .now >= start && $0.start ?? .now <= end }
+        toDosInBlockTimeRange.forEach { $0.assignedBlock = id }
+            
+        
         return toDosInBlockTimeRange
     }
 

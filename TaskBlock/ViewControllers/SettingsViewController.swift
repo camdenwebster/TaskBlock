@@ -32,10 +32,10 @@ class SettingsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let initialSettings = initialSettings
-        for item in settingsItems {
-            item.forEach { item in initializeUserDefaults(dict: initialSettings, key: item.identifier) }
-        }
+//        let initialSettings = initialSettings
+//        for item in settingsItems {
+//            item.forEach { item in initializeUserDefaults(dict: initialSettings, key: item.identifier) }
+//        }
     }
     
     // MARK: - Table view data source
@@ -70,16 +70,16 @@ class SettingsViewController: UITableViewController {
         print("Tapped \(settingsItems[indexPath.section][indexPath.row].title)")
     }
     
-    func initializeUserDefaults(dict: [String : Any], key: String) {
-        let defaults = UserDefaults.standard
-
-        // Check if the dictionary already has a value
-        if defaults.object(forKey: key) == nil {
-            // Set initial dictionary values
-            let initialSettings: [String: Any] = dict
-            defaults.set(initialSettings, forKey: key)
-            print("Set initial value for \(key) to \(initialSettings)")
-        }
-    }
+//    func initializeUserDefaults(dict: [String : Any], key: String) {
+//        let defaults = UserDefaults.standard
+//
+//        // Check if the dictionary already has a value
+//        if defaults.object(forKey: key) == nil {
+//            // Set initial dictionary values
+//            let initialSettings: [String: Any] = dict
+//            defaults.set(initialSettings, forKey: key)
+//            print("Set initial value for \(key) to \(initialSettings)")
+//        }
+//    }
 
 }
