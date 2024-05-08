@@ -28,44 +28,46 @@ class ScheduleViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        
-        // Adding blocks for testing purposes
-        do {
-            let block1 = BlockItem(context: context)
-            block1.id = UUID()
-            block1.title = "Block 1"
-            block1.preferredCategory = "School"
-            block1.preferredDifficulty = 2
-            block1.start = setTimeWithTodaysDate(hour: 8)
-            block1.end = setTimeWithTodaysDate(hour: 10)
-//            blockItems.append(block1)
-            
-            let block2 = BlockItem(context: context)
-            block2.id = UUID()
-            block2.title = "Block 2"
-            block2.preferredCategory = "Work"
-            block2.preferredDifficulty = 1
-            block2.start = setTimeWithTodaysDate(hour: 10)
-            block2.end = setTimeWithTodaysDate(hour: 12)
-//            blockItems.append(block2)
-            
-            let block3 = BlockItem(context: context)
-            block3.id = UUID()
-            block3.title = "Block 3"
-            block3.preferredCategory = "Work"
-            block3.preferredDifficulty = 1
-            block3.start = setTimeWithTodaysDate(hour: 13)
-            block3.end = setTimeWithTodaysDate(hour: 16)
-//            blockItems.append(block3)
-            
-            
-            try context.save()
-            
-            print("Found \(blockItems.count) blocks")
+        getBlocks()
+        if blockItems.isEmpty {
+            // Adding blocks for testing purposes
+            do {
+                let block1 = BlockItem(context: context)
+                block1.id = UUID()
+                block1.title = "Block 1"
+                block1.preferredCategory = "School"
+                block1.preferredDifficulty = 2
+                block1.start = setTimeWithTodaysDate(hour: 8)
+                block1.end = setTimeWithTodaysDate(hour: 10)
+    //            blockItems.append(block1)
+                
+                let block2 = BlockItem(context: context)
+                block2.id = UUID()
+                block2.title = "Block 2"
+                block2.preferredCategory = "Work"
+                block2.preferredDifficulty = 1
+                block2.start = setTimeWithTodaysDate(hour: 10)
+                block2.end = setTimeWithTodaysDate(hour: 12)
+    //            blockItems.append(block2)
+                
+                let block3 = BlockItem(context: context)
+                block3.id = UUID()
+                block3.title = "Block 3"
+                block3.preferredCategory = "Work"
+                block3.preferredDifficulty = 1
+                block3.start = setTimeWithTodaysDate(hour: 13)
+                block3.end = setTimeWithTodaysDate(hour: 16)
+    //            blockItems.append(block3)
+                
+                
+                try context.save()
+                
+                print("Found \(blockItems.count) blocks")
 
-        }
-        catch {
-            fatalError("Failed to save blocks")
+            }
+            catch {
+                fatalError("Failed to save blocks")
+            }
         }
         
         for todo in toDoItems {

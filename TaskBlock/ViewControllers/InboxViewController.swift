@@ -75,6 +75,7 @@ class InboxViewController: UITableViewController {
 //        self.getAllItems()
         print("New task - setting it as ID: \(newItem.id)")
         print("todos count: \(toDoItems.count)")
+        
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
