@@ -11,26 +11,16 @@ class SettingsViewController: UITableViewController {
     
     var blockItems = [BlockItem]()
     var sections = ["General", "Schedule Settings", "About"]
-    var settingsItems: [[Setting]] = [
-        [
-            Setting(identifier: "appearance", title: "Appearance", description: "Apperance settings", symbol: UIImage(systemName: "eye"), type: nil, subSections: ["Theme", "Inbox Placement"]),
-            Setting(identifier: "calendarReminderSettings", title: "Calendar and Reminder Settings", description: "Settings for the Apple Calendar and Reminders integration", symbol: UIImage(systemName: "calendar"), type: nil, subSections: ["Calendar", "Reminders"]),
-            Setting(identifier: "iCloudSettings", title: "iCloud Settings", description: "View iCloud synchronization settings", symbol: UIImage(systemName: "cloud"), type: nil, subSections: ["iCloud Sync Status"])
-        ],
-        [
-            Setting(identifier: "blockSettings", title: "Blocks", description: "View currently configured blocks", symbol: UIImage(systemName: "calendar.day.timeline.left"), type: nil, subSections: ["Blocks", "Add New"]),
-            Setting(identifier: "daySettings", title: "Day Settings", description: "View start and end times for daily schedule", symbol: UIImage(systemName: "calendar"), type: nil, subSections: ["Start and End Time"])
-        ],
-        [
-            Setting(identifier: "about", title: "About", description: "View more information about this app", symbol: UIImage(systemName: "info.circle"), type: nil, subSections: ["Version Details", "Contact"])
-        ]
+    let settingsItems = MainSettingsMenu().mainMenuItems
+    
+
         
          
 //         , "Calendar and Reminders Settings", "iCloud Settings"],
 //        ["Day Start Time", "Day End Time"],
 //        [],
 //        ["About", "Contact"]
-    ]
+//    ]
     let initialSettings: [String: String] = ["Theme": "matchSystem", "Inbox Placement": "inboxAbove"]
 
     
@@ -42,10 +32,10 @@ class SettingsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let initialSettings = initialSettings
-        for item in settingsItems {
-            item.forEach { item in initializeUserDefaults(dict: initialSettings, key: item.identifier) }
-        }
+//        let initialSettings = initialSettings
+//        for item in settingsItems {
+//            item.forEach { item in initializeUserDefaults(dict: initialSettings, key: item.identifier) }
+//        }
     }
     
     // MARK: - Table view data source
@@ -80,15 +70,16 @@ class SettingsViewController: UITableViewController {
         print("Tapped \(settingsItems[indexPath.section][indexPath.row].title)")
     }
     
-    func initializeUserDefaults(dict: [String : Any], key: String) {
-        let defaults = UserDefaults.standard
-
-        // Check if the dictionary already has a value
-        if defaults.object(forKey: "appearance") == nil {
-            // Set initial dictionary values
-            let initialSettings: [String: Any] = dict
-            defaults.set(initialSettings, forKey: "appearance")
-        }
-    }
+//    func initializeUserDefaults(dict: [String : Any], key: String) {
+//        let defaults = UserDefaults.standard
+//
+//        // Check if the dictionary already has a value
+//        if defaults.object(forKey: key) == nil {
+//            // Set initial dictionary values
+//            let initialSettings: [String: Any] = dict
+//            defaults.set(initialSettings, forKey: key)
+//            print("Set initial value for \(key) to \(initialSettings)")
+//        }
+//    }
 
 }

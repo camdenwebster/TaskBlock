@@ -15,12 +15,20 @@ class InboxViewController: UITableViewController {
     private var toDoItems = [ToDoItem]()
     let dateFormatter: DateFormatter = DateFormatter()
     
+    @IBSegueAction func showDetails(_ coder: NSCoder) -> DetailViewController? {
+        let indexPath = IndexPath(row: toDoItems.count, section: 0)
+        let newItem = self.createItem()
+        print("New task - setting it as ID: \(newItem.id)")
+        print("todos count: \(toDoItems.count)")
+        return DetailViewController(coder: coder, toDo: newItem)
+    }
+    
     @IBSegueAction func showDetailView(_ coder: NSCoder) -> DetailViewController? {
         guard let indexPath = tableView.indexPathForSelectedRow else { fatalError("Nothing selected!") }
         let toDo = toDoItems[indexPath.row]
         return DetailViewController(coder: coder, toDo: toDo)
     }
-    @IBOutlet var notesLabel: UILabel!
+    
     
     // MARK: - View lifecycle methods
     override func viewDidLoad() {
@@ -53,7 +61,7 @@ class InboxViewController: UITableViewController {
             cell.detailTextLabel?.isHidden = false
             cell.detailTextLabel?.text = notes
         }
-        cell.textLabel?.text = toDo.title ?? "New Task"
+        cell.textLabel?.text = toDo.title ?? ""
         return cell
     }
     
@@ -68,24 +76,13 @@ class InboxViewController: UITableViewController {
     }
     
     
-    // MARK: - Actions
-    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        let indexPath = IndexPath(row: toDoItems.count, section: 0)
-        let newItem = self.createItem()
-//        self.getAllItems()
-        print("New task - setting it as ID: \(newItem.id)")
-        print("todos count: \(toDoItems.count)")
-        tableView.insertRows(at: [indexPath], with: .automatic)
-    }
-    
-    
     // MARK: CoreData CRUD Actions
     func getInboxItems() {
         
         do {
             let uncompletedItems = try context.fetch(ToDoItem.fetchRequest()).filter { $0.completed == false }
-            toDoItems = uncompletedItems.filter { $0.start == nil }
-            print("Fetched ToDos from CoreData:")
+            toDoItems = uncompletedItems.filter { $0.assignedBlock == nil }
+            print("Fetched Inbox items from CoreData:")
             for toDoItem in toDoItems {
                 printTaskDetails(toDoItem)
             }
@@ -105,7 +102,7 @@ class InboxViewController: UITableViewController {
     
     func createItem() -> ToDoItem {
         let newItem = ToDoItem(context: context)
-        newItem.title = "New Task"
+        newItem.title = ""
         newItem.id = UUID()
         newItem.priority = 1
         newItem.difficulty = 1
@@ -149,7 +146,9 @@ class InboxViewController: UITableViewController {
     }
     
     func printTaskDetails(_ toDo: ToDoItem) {
-        print("Task ID: \(toDo.id), title: \(toDo.title ?? "no title found"), start: \(convertDateToString(toDo.start ?? .now)), end: \(convertDateToString(toDo.end ?? .now)), notes: \(toDo.notes ?? "no notes found")")
+        if !toDoItems.isEmpty {
+            print("Task ID: \(toDo.id), title: \(toDo.title ?? "no title found"), start: \(convertDateToString(toDo.start ?? .now)), end: \(convertDateToString(toDo.end ?? .now)), notes: \(toDo.notes ?? "no notes found"), block: \(toDo.assignedBlock ?? toDo.id)")
+        }
     }
     
     func convertDateToString(_ date: Date) -> String {

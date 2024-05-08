@@ -1,20 +1,21 @@
 //
 //  DaySettings.swift
-//  TaskBlock
+//  ToDoItemBlock
 //
-//  Created by Camden Webster on 5/5/24.
+//  Created by Camden Webster on 4/25/24.
 //
 
 import Foundation
-import UIKit
 
-struct DaySettings: SettingsSubMenu {
-    var settings: [[Setting]] {
+struct DaySettings: SettingsSubMenuConfig {
+    var sections: [String]? = ["Start and End Time"]
+    var settings: [[SettingsSubMenuItem]] {
         [
             [
-                Setting(identifier: "startTime", title: "Start Time", description: "Date picker to determine daily schedule start time", symbol: nil, type: .text),
-                Setting(identifier: "endTime", title: "End Time", description: "Date picker to determine daily schedule end time", symbol: nil, type: .text),
+                SettingsSubMenuItem(identifier: "startTime", title: "Start Time", description: "Date picker to determine daily schedule start time", symbol: nil, type: .text),
+                SettingsSubMenuItem(identifier: "endTime", title: "End Time", description: "Date picker to determine daily schedule end time", symbol: nil, type: .text),
             ]
         ]
     }
 }
+

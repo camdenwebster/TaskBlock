@@ -8,20 +8,21 @@
 import Foundation
 import UIKit
 
-struct AppearaceSettings: SettingsSubMenu {
-    var settings: [[Setting]] = [
+struct AppearaceSettings: SettingsSubMenuConfig {
+    var sections: [String]? = ["Theme", "Inbox Placement"]
+    var settings: [[SettingsSubMenuItem]] = [
         [
-            Setting(identifier: "matchSystem", title: "Match System", description: "Sets display theme to match system setting", symbol: nil, type: .checkmark),
-            Setting(identifier: "light", title: "Light", description: "Sets display theme to Light Mode", symbol: nil, type: .checkmark),
-            Setting(identifier: "dark", title: "Dark", description: "Sets display theme to Dark Mode", symbol: nil, type: .checkmark)
+            SettingsSubMenuItem(identifier: "matchSystem", title: "Match System", description: "Sets display theme to match system setting", accessory: .checkmark, symbol: nil, type: .checkmark),
+            SettingsSubMenuItem(identifier: "light", title: "Light", description: "Sets display theme to Light Mode", accessory: .checkmark, symbol: nil, type: .checkmark),
+            SettingsSubMenuItem(identifier: "dark", title: "Dark", description: "Sets display theme to Dark Mode", accessory: .checkmark, symbol: nil, type: .checkmark)
         ],
         [
-            Setting(identifier: "inboxAbove", title: "Above Schedule", description: "Places the inbox above the schedule", symbol: nil, type: .checkmark),
-            Setting(identifier: "inboxBelow", title: "Below Schedule", description: "Places the inbox Below the schedule", symbol: nil, type: .checkmark)
+            SettingsSubMenuItem(identifier: "inboxAbove", title: "Above Schedule", description: "Places the inbox above the schedule", accessory: .checkmark, symbol: nil, type: .checkmark),
+            SettingsSubMenuItem(identifier: "inboxBelow", title: "Below Schedule", description: "Places the inbox Below the schedule", accessory: .checkmark, symbol: nil, type: .checkmark)
         ]
      ]
     
-    func switchAppearance(_ setting: Setting) {
+    func switchAppearance(_ setting: SettingsSubMenuItem) {
         var mode: UIUserInterfaceStyle
         
         switch setting.identifier {

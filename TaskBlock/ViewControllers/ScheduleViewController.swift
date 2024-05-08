@@ -28,44 +28,46 @@ class ScheduleViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        
-        // Adding blocks for testing purposes
-        do {
-            let block1 = BlockItem(context: context)
-            block1.id = UUID()
-            block1.title = "Block 1"
-            block1.preferredCategory = "School"
-            block1.preferredDifficulty = 2
-            block1.start = setTimeWithTodaysDate(hour: 8)
-            block1.end = setTimeWithTodaysDate(hour: 10)
-//            blockItems.append(block1)
-            
-            let block2 = BlockItem(context: context)
-            block2.id = UUID()
-            block2.title = "Block 2"
-            block2.preferredCategory = "Work"
-            block2.preferredDifficulty = 1
-            block2.start = setTimeWithTodaysDate(hour: 10)
-            block2.end = setTimeWithTodaysDate(hour: 12)
-//            blockItems.append(block2)
-            
-            let block3 = BlockItem(context: context)
-            block3.id = UUID()
-            block3.title = "Block 3"
-            block3.preferredCategory = "Work"
-            block3.preferredDifficulty = 1
-            block3.start = setTimeWithTodaysDate(hour: 13)
-            block3.end = setTimeWithTodaysDate(hour: 16)
-//            blockItems.append(block3)
-            
-            
-            try context.save()
-            
-            print("Found \(blockItems.count) blocks")
+        getBlocks()
+        if blockItems.isEmpty {
+            // Adding blocks for testing purposes
+            do {
+                let block1 = BlockItem(context: context)
+                block1.id = UUID()
+                block1.title = "Block 1"
+                block1.preferredCategory = "School"
+                block1.preferredDifficulty = 2
+                block1.start = setTimeWithTodaysDate(hour: 8)
+                block1.end = setTimeWithTodaysDate(hour: 10)
+    //            blockItems.append(block1)
+                
+                let block2 = BlockItem(context: context)
+                block2.id = UUID()
+                block2.title = "Block 2"
+                block2.preferredCategory = "Work"
+                block2.preferredDifficulty = 1
+                block2.start = setTimeWithTodaysDate(hour: 10)
+                block2.end = setTimeWithTodaysDate(hour: 12)
+    //            blockItems.append(block2)
+                
+                let block3 = BlockItem(context: context)
+                block3.id = UUID()
+                block3.title = "Block 3"
+                block3.preferredCategory = "Work"
+                block3.preferredDifficulty = 1
+                block3.start = setTimeWithTodaysDate(hour: 13)
+                block3.end = setTimeWithTodaysDate(hour: 16)
+    //            blockItems.append(block3)
+                
+                
+                try context.save()
+                
+                print("Found \(blockItems.count) blocks")
 
-        }
-        catch {
-            fatalError("Failed to save blocks")
+            }
+            catch {
+                fatalError("Failed to save blocks")
+            }
         }
         
         for todo in toDoItems {
@@ -136,9 +138,8 @@ class ScheduleViewController: UIViewController {
     
     func getScheduledItems() {
         do {
-            // Only get toDoItems which have a start date
-            toDoItems = try context.fetch(ToDoItem.fetchRequest()).filter { $0.start != nil }
-            // Then sort them by their start date
+            toDoItems = try context.fetch(ToDoItem.fetchRequest())
+            // Sort them by their start date
             toDoItems.sort { (toDoItem1, toDoItem2) -> Bool in
                 switch (toDoItem1.start, toDoItem2.start) {
                 case (let date1?, let date2?):
@@ -149,14 +150,22 @@ class ScheduleViewController: UIViewController {
                     return true           // Any date is considered earlier than nil.
                 }
             }
-
-            print("Fetched ToDos from CoreData:")
-            for toDoItem in toDoItems {
-                toDoVC.printTaskDetails(toDoItem)
+            
+            var index = 0
+            for block in blockItems {
+                schedule.append([])
+                let toDosToAdd: [ToDoItem] = block.addToDoItemsToBlock(toDoItems)
+                if !toDosToAdd.isEmpty {
+                    schedule.insert(toDosToAdd, at: index)
+                    print("inserted \(toDosToAdd) at index \(index)")
+                }
+                
+                index += 1
             }
             
-            for block in blockItems {
-                schedule.append(block.addToDoItemsToBlock(toDoItems))
+            print("Fetched Scheduled items from CoreData:")
+            for toDoItem in toDoItems {
+                toDoVC.printTaskDetails(toDoItem)
             }
             
             DispatchQueue.main.async {
