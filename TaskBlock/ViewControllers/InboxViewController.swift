@@ -30,9 +30,6 @@ class InboxViewController: UITableViewController {
     }
     
     
-    
-    @IBOutlet var notesLabel: UILabel!
-    
     // MARK: - View lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,23 +76,12 @@ class InboxViewController: UITableViewController {
     }
     
     
-    // MARK: - Actions
-//    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-//        let indexPath = IndexPath(row: toDoItems.count, section: 0)
-//        let newItem = self.createItem()
-////        self.getAllItems()
-//        print("New task - setting it as ID: \(newItem.id)")
-//        print("todos count: \(toDoItems.count)")
-//        tableView.insertRows(at: [indexPath], with: .automatic)
-//    }
-    
-    
     // MARK: CoreData CRUD Actions
     func getInboxItems() {
         
         do {
             let uncompletedItems = try context.fetch(ToDoItem.fetchRequest()).filter { $0.completed == false }
-            toDoItems = uncompletedItems.filter { $0.start == nil }
+            toDoItems = uncompletedItems.filter { $0.assignedBlock == nil }
             print("Fetched Inbox items from CoreData:")
             for toDoItem in toDoItems {
                 printTaskDetails(toDoItem)
