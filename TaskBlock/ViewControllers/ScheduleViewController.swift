@@ -138,9 +138,8 @@ class ScheduleViewController: UIViewController {
     
     func getScheduledItems() {
         do {
-            // Only get toDoItems which have a start date
-            toDoItems = try context.fetch(ToDoItem.fetchRequest()).filter { $0.start != nil }
-            // Then sort them by their start date
+            toDoItems = try context.fetch(ToDoItem.fetchRequest())
+            // Sort them by their start date
             toDoItems.sort { (toDoItem1, toDoItem2) -> Bool in
                 switch (toDoItem1.start, toDoItem2.start) {
                 case (let date1?, let date2?):
@@ -151,14 +150,22 @@ class ScheduleViewController: UIViewController {
                     return true           // Any date is considered earlier than nil.
                 }
             }
-
-            print("Fetched ToDos from CoreData:")
-            for toDoItem in toDoItems {
-                toDoVC.printTaskDetails(toDoItem)
+            
+            var index = 0
+            for block in blockItems {
+                schedule.append([])
+                let toDosToAdd: [ToDoItem] = block.addToDoItemsToBlock(toDoItems)
+                if !toDosToAdd.isEmpty {
+                    schedule.insert(toDosToAdd, at: index)
+                    print("inserted \(toDosToAdd) at index \(index)")
+                }
+                
+                index += 1
             }
             
-            for block in blockItems {
-                schedule.append(block.addToDoItemsToBlock(toDoItems))
+            print("Fetched Scheduled items from CoreData:")
+            for toDoItem in toDoItems {
+                toDoVC.printTaskDetails(toDoItem)
             }
             
             DispatchQueue.main.async {

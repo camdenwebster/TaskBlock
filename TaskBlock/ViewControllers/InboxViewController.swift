@@ -96,7 +96,7 @@ class InboxViewController: UITableViewController {
         do {
             let uncompletedItems = try context.fetch(ToDoItem.fetchRequest()).filter { $0.completed == false }
             toDoItems = uncompletedItems.filter { $0.start == nil }
-            print("Fetched ToDos from CoreData:")
+            print("Fetched Inbox items from CoreData:")
             for toDoItem in toDoItems {
                 printTaskDetails(toDoItem)
             }
@@ -160,7 +160,9 @@ class InboxViewController: UITableViewController {
     }
     
     func printTaskDetails(_ toDo: ToDoItem) {
-        print("Task ID: \(toDo.id), title: \(toDo.title ?? "no title found"), start: \(convertDateToString(toDo.start ?? .now)), end: \(convertDateToString(toDo.end ?? .now)), notes: \(toDo.notes ?? "no notes found")")
+        if !toDoItems.isEmpty {
+            print("Task ID: \(toDo.id), title: \(toDo.title ?? "no title found"), start: \(convertDateToString(toDo.start ?? .now)), end: \(convertDateToString(toDo.end ?? .now)), notes: \(toDo.notes ?? "no notes found"), block: \(toDo.assignedBlock ?? toDo.id)")
+        }
     }
     
     func convertDateToString(_ date: Date) -> String {
